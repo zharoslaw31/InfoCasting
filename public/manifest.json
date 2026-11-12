@@ -1,0 +1,16 @@
+{
+  "name": "InfoCasting",
+  "short_name": "InfoCasting",
+  "description": "Статті, Telegram і Reddit в одній стрічці — українською, зі збереженням в Obsidian.",
+  "lang": "uk",
+  "start_url": "/InfoCasting/",
+  "scope": "/InfoCasting/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0A0C12",
+  "theme_color": "#0A0C12",
+  "icons": [
+    { "src": "/InfoCasting/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/InfoCasting/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

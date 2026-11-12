@@ -4,7 +4,9 @@
   "type": "module",
   "description": "Збирання стрічки InfoCasting (запускається в GitHub Actions)",
   "dependencies": {
+    "@mozilla/readability": "^0.6.0",
     "fast-xml-parser": "^5.12.0",
+    "linkedom": "^0.18.15",
     "node-html-parser": "^9.0.7"
   }
 }

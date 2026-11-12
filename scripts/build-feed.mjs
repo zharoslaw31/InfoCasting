@@ -18,6 +18,8 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { XMLParser } from 'fast-xml-parser';
 import { parse as parseHtml, NodeType } from 'node-html-parser';
+import { Readability } from '@mozilla/readability';
+import { parseHTML } from 'linkedom';
 
 const DIR = dirname(fileURLToPath(import.meta.url));
 const OUT = process.argv[2] || join(DIR, '..', 'data-out');
@@ -27,8 +29,9 @@ const KEEP_DAYS = { rss: 14, reddit: 7, tg: 4 };
 const PER_SOURCE = { rss: 15, reddit: 20, tg: 40 };
 const MAX_TRANSLATE = 1500; // рядків за запуск; решта — наступного разу
 const MAX_COMMENT_FETCH = 120;
-const UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36';
-const REDDIT_UA = 'web:infocasting:1.0 (personal RSS reader)';
+const MAX_FULLTEXT = 120; // скільки повних статей добирати з сайтів за запуск (коли стрічка дає лише анонс)
+const UA = 'InfoCasting/1.0 (personal RSS reader; +https://github.com/zharoslaw31/InfoCasting)';
+const REDDIT_UA = 'web:infocasting:1.0 (personal RSS reader; +https://github.com/zharoslaw31/InfoCasting)';
 
 const sources = JSON.parse(readFileSync(join(DIR, 'sources.json'), 'utf8'));
 mkdirSync(join(OUT, 'c'), { recursive: true });
@@ -335,24 +338,14 @@ async function redditAuth() {
   return (await res.json()).access_token;
 }
 
-let redditMode = null; // 'oauth' | 'json' | 'old' | 'rss'
+let redditMode = null; // 'oauth' — офіційний API за ключем; 'rss' — публічні RSS-стрічки
+let redditBlocked = false; // Reddit відмовив — більше не смикаємо його в цьому запуску
 async function redditJson(path) {
-  const tries = redditMode ? [redditMode] : redditToken ? ['oauth', 'json', 'old'] : ['json', 'old'];
-  let last;
-  for (const mode of tries) {
-    try {
-      const sep = path.includes('?') ? '&' : '?';
-      const url = mode === 'oauth' ? `https://oauth.reddit.com${path}${sep}raw_json=1` : `https://${mode === 'old' ? 'old' : 'www'}.reddit.com${path.replace(/(\?|$)/, '.json$1')}${sep}raw_json=1`;
-      const headers = mode === 'oauth' ? { authorization: `Bearer ${redditToken}`, 'user-agent': REDDIT_UA } : { 'user-agent': REDDIT_UA };
-      const text = await get(url, { headers, tries: 1 });
-      const data = JSON.parse(text);
-      redditMode = mode;
-      return data;
-    } catch (e) {
-      last = e;
-    }
-  }
-  throw last;
+  if (!redditToken) throw new Error('немає ключа Reddit');
+  const sep = path.includes('?') ? '&' : '?';
+  const text = await get(`https://oauth.reddit.com${path}${sep}raw_json=1`, { headers: { authorization: `Bearer ${redditToken}`, 'user-agent': REDDIT_UA }, tries: 1 });
+  redditMode = 'oauth';
+  return JSON.parse(text);
 }
 
 function redditPost(d) {
@@ -400,22 +393,27 @@ function flattenComments(children, depth = 0, out = []) {
 }
 
 async function fetchReddit(src) {
-  const path = `/r/${src.subs.join('+')}/top?t=day&limit=40`;
-  try {
-    const data = await redditJson(path);
+  if (redditToken) {
+    const data = await redditJson(`/r/${src.subs.join('+')}/top?t=day&limit=40`);
     return data.data.children.filter((c) => c.kind === 't3').map((c) => redditPost(c.data));
-  } catch (e) {
-    // запасний шлях — RSS (без рейтингу й коментарів)
-    const text = await get(`https://www.reddit.com/r/${src.subs.join('+')}/top/.rss?t=day&limit=40`, { headers: { 'user-agent': REDDIT_UA }, tries: 1 }).catch(() => {
-      throw e;
-    });
-    return parseFeed(text, { url: 'https://www.reddit.com' }).map((x) => ({
-      ...x,
-      rid: x.link.match(/comments\/([a-z0-9]+)/)?.[1] ?? '',
-      sub: x.link.match(/\/r\/([^/]+)/)?.[1] ? 'r/' + x.link.match(/\/r\/([^/]+)/)[1] : '',
-      blocks: x.blocks.filter((b) => !/^submitted by|^\[link\]|^\[comments\]/i.test(b[1])),
-    }));
   }
+  // без ключа — публічна RSS-стрічка (без рейтингу й коментарів); якщо Reddit відмовив, чекаємо наступного запуску
+  if (redditBlocked) throw new Error('Reddit тимчасово не відповідає (додайте ключ Reddit)');
+  let text;
+  try {
+    text = await get(`https://www.reddit.com/r/${src.subs.join('+')}/top/.rss?t=day&limit=40`, { headers: { 'user-agent': REDDIT_UA }, tries: 1 });
+  } catch (e) {
+    redditBlocked = true;
+    throw e;
+  }
+  redditMode = 'rss';
+  return parseFeed(text, { url: 'https://www.reddit.com' }).map((x) => ({
+    ...x,
+    rid: x.link.match(/comments\/([a-z0-9]+)/)?.[1] ?? '',
+    sub: x.link.match(/\/r\/([^/]+)/)?.[1] ? 'r/' + x.link.match(/\/r\/([^/]+)/)[1] : '',
+    author: x.author.replace(/^\/?u\//, 'u/'),
+    blocks: x.blocks.filter((b) => !/^submitted by|^\[link\]|^\[comments\]/i.test(b[1])),
+  }));
 }
 
 // ───────────────────────── переклад ─────────────────────────
@@ -476,6 +474,18 @@ async function translateAll(texts) {
 }
 const tr = (t) => (t ? cache[hash(t, 16)] : undefined);
 
+// ───────────────────────── повний текст ─────────────────────────
+
+/** Повний текст статті з її сторінки (як «режим читання» в браузері). */
+export async function fullText(url) {
+  const html = await get(url, { timeout: 15000, tries: 1, headers: { accept: 'text/html,application/xhtml+xml' } });
+  const { document } = parseHTML(html);
+  const art = new Readability(document, { charThreshold: 400 }).parse();
+  if (!art?.content) return null;
+  const blocks = htmlToBlocks(art.content, url);
+  return wordsOf(blocksText(blocks)) >= 150 ? blocks : null;
+}
+
 // ───────────────────────── збирання ─────────────────────────
 
 async function fetchSource(src) {
@@ -496,7 +506,7 @@ async function fetchSource(src) {
 function toItem(src, raw) {
   const text = blocksText(raw.blocks);
   const w = wordsOf(text);
-  const x = excerpt(src.kind === 'tg' ? text.split('\n').slice(1).join(' ') || text : text);
+  const x = excerpt(text);
   const lang = isForeign(raw.title + ' ' + x) ? 'en' : 'uk';
   const id = src.kind[0] + hash(raw.link || raw.title);
   const it = { id, s: src.id, k: src.kind, t: raw.title, u: raw.link, d: raw.date || NOW, x, w, l: lang };
@@ -528,7 +538,10 @@ async function main() {
   }
 
   // Reddit — по черзі й з паузами, решта — паралельно
-  const reddit = sources.filter((s) => s.kind === 'reddit');
+  // Reddit без ключа часто відповідає лише на кілька запитів — тож щоразу починаємо з іншої групи
+  const redditAll = sources.filter((s) => s.kind === 'reddit');
+  const shift = redditToken ? 0 : Math.floor(NOW / 1800e3) % Math.max(1, redditAll.length);
+  const reddit = [...redditAll.slice(shift), ...redditAll.slice(0, shift)];
   const other = sources.filter((s) => s.kind !== 'reddit');
   const results = new Map();
   const runOne = async (src) => {
@@ -550,7 +563,7 @@ async function main() {
     (async () => {
       for (const src of reddit) {
         await runOne(src);
-        await sleep(redditMode === 'oauth' ? 700 : 2500);
+        if (!redditBlocked) await sleep(redditToken ? 700 : 4000);
       }
     })(),
   ]);
@@ -580,7 +593,7 @@ async function main() {
 
   // коментарі Reddit: для найкращих дописів, яких ще немає в кеші
   let commentsFetched = 0;
-  if (redditMode && redditMode !== 'rss') {
+  if (redditMode === 'oauth') {
     const need = uniq
       .filter((it) => it.k === 'reddit' && it.rid && (it.nc ?? 0) > 0)
       .filter((it) => {
@@ -606,7 +619,48 @@ async function main() {
       } catch {
         break; // Reddit почав відмовляти — продовжимо наступного разу
       }
-      await sleep(redditMode === 'oauth' ? 650 : 2200);
+      await sleep(650);
+    }
+  }
+
+  // повні тексти для статей, у яких у стрічці лише анонс (раз на статтю; невдачі пам'ятаємо)
+  const ft = (cache._ft ??= {});
+  const short = uniq
+    .filter((it) => it.k === 'rss' && it.w < 150 && it.u && ft[it.id] == null)
+    .filter((it) => {
+      const prev = readJson(`c/${it.id}.json`, null);
+      if (prev?.full) {
+        contents.set(it.id, prev.b);
+        it.w = wordsOf(blocksText(prev.b));
+        return false;
+      }
+      return true;
+    })
+    .slice(0, MAX_FULLTEXT);
+  let fullOk = 0;
+  await pool(short, 6, async (it) => {
+    try {
+      const blocks = await fullText(it.u);
+      if (blocks) {
+        const lead = contents.get(it.id)?.find((b) => b[0] === 'img');
+        contents.set(it.id, lead && !blocks.some((b) => b[0] === 'img') ? [lead, ...blocks] : blocks);
+        contents.set(it.id + ':full', true);
+        it.w = wordsOf(blocksText(blocks));
+        fullOk++;
+      }
+      ft[it.id] = blocks ? 1 : 0;
+    } catch {
+      ft[it.id] = 0;
+    }
+  });
+  // уже добрані раніше повні тексти — зберігаємо, щоб не губити
+  for (const it of uniq) {
+    if (it.k !== 'rss' || ft[it.id] !== 1 || contents.get(it.id + ':full')) continue;
+    const prev = readJson(`c/${it.id}.json`, null);
+    if (prev?.full) {
+      contents.set(it.id, prev.b);
+      contents.set(it.id + ':full', true);
+      it.w = Math.max(it.w, wordsOf(blocksText(prev.b)));
     }
   }
 
@@ -623,12 +677,13 @@ async function main() {
   // повні тексти: пишемо нові й оновлені, прибираємо застарілі
   const keep = new Set(uniq.map((it) => it.id));
   for (const [key, blocks] of contents) {
-    if (key.endsWith(':cm')) continue;
+    if (key.endsWith(':cm') || key.endsWith(':full')) continue;
     if (!keep.has(key)) continue;
     const f = join(OUT, 'c', key + '.json');
     const cm = contents.get(key + ':cm');
     const prev = existsSync(f) ? readJson(`c/${key}.json`, {}) : {};
     const next = { b: blocks?.length ? blocks : (prev.b ?? []) };
+    if (contents.get(key + ':full')) next.full = 1;
     if (cm) Object.assign(next, { cm, cmAt: NOW });
     else if (prev.cm) Object.assign(next, { cm: prev.cm, cmAt: prev.cmAt });
     const s = JSON.stringify(next);
@@ -638,7 +693,8 @@ async function main() {
 
   // пам'ять перекладів: лише те, що ще потрібне
   const used = new Set(foreign.flatMap((it) => [it.t, it.x]).filter(Boolean).map((t) => hash(t, 16)));
-  for (const k of Object.keys(cache)) if (!used.has(k)) delete cache[k];
+  for (const k of Object.keys(cache)) if (k !== '_ft' && !used.has(k)) delete cache[k];
+  for (const k of Object.keys(ft)) if (!keep.has(k)) delete ft[k];
 
   uniq.sort((a, b) => b.d - a.d);
   const feed = {
@@ -656,6 +712,7 @@ async function main() {
   const by = (k) => uniq.filter((it) => it.k === k).length;
   console.log(`Матеріалів: ${uniq.length} (блоги ${by('rss')}, Telegram ${by('tg')}, Reddit ${by('reddit')})`);
   console.log(`Переклад: нових ${trStat.done}, помилок ${trStat.failed}, на потім ${trStat.left}. Коментарів Reddit: ${commentsFetched}. Reddit: ${redditMode ?? 'недоступний'}`);
+  console.log(`Повних текстів добрано з сайтів: ${fullOk} з ${short.length}`);
   console.log(`Не відповіли ${bad.length} з ${sources.length}:`);
   for (const s of bad) console.log(`  ${sources.find((x) => x.id === s.id)?.name}: ${s.err}`);
   console.log(`Готово за ${Math.round((Date.now() - t0) / 1000)} с`);

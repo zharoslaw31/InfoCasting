@@ -1,0 +1,45 @@
+{
+  "expo": {
+    "name": "InfoCasting",
+    "slug": "infocasting",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.infocasting.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0A0C12",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "package": "com.infocasting.app"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro",
+      "output": "single",
+      "name": "InfoCasting",
+      "shortName": "InfoCasting",
+      "lang": "uk",
+      "themeColor": "#0A0C12",
+      "backgroundColor": "#0A0C12"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-image",
+      "expo-font"
+    ],
+    "scheme": "infocasting",
+    "backgroundColor": "#0A0C12",
+    "experiments": {
+      "typedRoutes": false,
+      "baseUrl": "/InfoCasting"
+    }
+  }
+}
