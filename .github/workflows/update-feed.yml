@@ -1,0 +1,59 @@
+name: Update feed
+
+# Збирає свіжі статті, пости Telegram і Reddit, перекладає українською
+# і кладе дані в гілку `data`, звідки їх бере додаток. Кожні 30 хвилин
+# або вручну: Actions → Update feed → Run workflow.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '7,37 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build-feed.mjs'
+      - 'scripts/sources.json'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: feed
+  cancel-in-progress: false
+
+jobs:
+  feed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install feed tools
+        working-directory: scripts
+        run: npm install --no-audit --no-fund
+      - name: Previous data
+        run: |
+          if git fetch --depth 1 origin data 2>/dev/null; then
+            git worktree add data-out FETCH_HEAD --detach
+          else
+            mkdir -p data-out
+          fi
+      - name: Build feed
+        env:
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+        run: node scripts/build-feed.mjs data-out
+      - name: Publish data
+        run: |
+          tmp=$(mktemp -d)
+          cp -r data-out/feed.json data-out/cache.json data-out/sources.json data-out/c "$tmp"/
+          cd "$tmp"
+          git init -q -b data
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Стрічка $(date -u +'%Y-%m-%d %H:%M') UTC"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" data

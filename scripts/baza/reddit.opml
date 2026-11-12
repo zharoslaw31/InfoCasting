@@ -1,0 +1,203 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<opml version="2.0">
+  <head>
+    <title>BAZE: Reddit (для Inoreader)</title>
+    <dateCreated>Tue, 20 Oct 2026 10:30:00 GMT</dateCreated>
+  </head>
+  <body>
+    <outline text="💼 Маркетинг і бренд" title="💼 Маркетинг і бренд">
+      <outline type="rss" text="r/marketing" title="r/marketing" xmlUrl="https://www.reddit.com/r/marketing/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/marketing/" />
+      <outline type="rss" text="r/branding" title="r/branding" xmlUrl="https://www.reddit.com/r/branding/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/branding/" />
+      <outline type="rss" text="r/advertising" title="r/advertising" xmlUrl="https://www.reddit.com/r/advertising/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/advertising/" />
+      <outline type="rss" text="r/Entrepreneur" title="r/Entrepreneur" xmlUrl="https://www.reddit.com/r/Entrepreneur/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/Entrepreneur/" />
+      <outline type="rss" text="r/smallbusiness" title="r/smallbusiness" xmlUrl="https://www.reddit.com/r/smallbusiness/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/smallbusiness/" />
+      <outline type="rss" text="r/startups" title="r/startups" xmlUrl="https://www.reddit.com/r/startups/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/startups/" />
+      <outline type="rss" text="r/copywriting" title="r/copywriting" xmlUrl="https://www.reddit.com/r/copywriting/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/copywriting/" />
+    </outline>
+    <outline text="💼 Інтернет-маркетинг і SEO" title="💼 Інтернет-маркетинг і SEO">
+      <outline type="rss" text="r/digital_marketing" title="r/digital_marketing" xmlUrl="https://www.reddit.com/r/digital_marketing/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/digital_marketing/" />
+      <outline type="rss" text="r/SEO" title="r/SEO" xmlUrl="https://www.reddit.com/r/SEO/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/SEO/" />
+      <outline type="rss" text="r/bigseo" title="r/bigseo" xmlUrl="https://www.reddit.com/r/bigseo/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/bigseo/" />
+      <outline type="rss" text="r/PPC" title="r/PPC" xmlUrl="https://www.reddit.com/r/PPC/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/PPC/" />
+      <outline type="rss" text="r/GoogleAds" title="r/GoogleAds" xmlUrl="https://www.reddit.com/r/GoogleAds/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/GoogleAds/" />
+      <outline type="rss" text="r/FacebookAds" title="r/FacebookAds" xmlUrl="https://www.reddit.com/r/FacebookAds/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/FacebookAds/" />
+      <outline type="rss" text="r/analytics" title="r/analytics" xmlUrl="https://www.reddit.com/r/analytics/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/analytics/" />
+      <outline type="rss" text="r/emailmarketing" title="r/emailmarketing" xmlUrl="https://www.reddit.com/r/emailmarketing/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/emailmarketing/" />
+      <outline type="rss" text="r/webmarketing" title="r/webmarketing" xmlUrl="https://www.reddit.com/r/webmarketing/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/webmarketing/" />
+    </outline>
+    <outline text="💼 SMM і контент" title="💼 SMM і контент">
+      <outline type="rss" text="r/socialmedia" title="r/socialmedia" xmlUrl="https://www.reddit.com/r/socialmedia/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/socialmedia/" />
+      <outline type="rss" text="r/content_marketing" title="r/content_marketing" xmlUrl="https://www.reddit.com/r/content_marketing/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/content_marketing/" />
+      <outline type="rss" text="r/SocialMediaMarketing" title="r/SocialMediaMarketing" xmlUrl="https://www.reddit.com/r/SocialMediaMarketing/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/SocialMediaMarketing/" />
+      <outline type="rss" text="r/linkedin" title="r/linkedin" xmlUrl="https://www.reddit.com/r/linkedin/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/linkedin/" />
+      <outline type="rss" text="r/Instagram" title="r/Instagram" xmlUrl="https://www.reddit.com/r/Instagram/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/Instagram/" />
+      <outline type="rss" text="r/InstagramMarketing" title="r/InstagramMarketing" xmlUrl="https://www.reddit.com/r/InstagramMarketing/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/InstagramMarketing/" />
+      <outline type="rss" text="r/NewTubers" title="r/NewTubers" xmlUrl="https://www.reddit.com/r/NewTubers/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/NewTubers/" />
+    </outline>
+    <outline text="💼 B2B і продажі" title="💼 B2B і продажі">
+      <outline type="rss" text="r/b2bmarketing" title="r/b2bmarketing" xmlUrl="https://www.reddit.com/r/b2bmarketing/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/b2bmarketing/" />
+      <outline type="rss" text="r/sales" title="r/sales" xmlUrl="https://www.reddit.com/r/sales/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/sales/" />
+      <outline type="rss" text="r/salestechniques" title="r/salestechniques" xmlUrl="https://www.reddit.com/r/salestechniques/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/salestechniques/" />
+    </outline>
+    <outline text="💼 Галузь: меблі й верстати" title="💼 Галузь: меблі й верстати">
+      <outline type="rss" text="r/woodworking" title="r/woodworking" xmlUrl="https://www.reddit.com/r/woodworking/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/woodworking/" />
+      <outline type="rss" text="r/CNC" title="r/CNC" xmlUrl="https://www.reddit.com/r/CNC/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/CNC/" />
+      <outline type="rss" text="r/Carpentry" title="r/Carpentry" xmlUrl="https://www.reddit.com/r/Carpentry/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/Carpentry/" />
+      <outline type="rss" text="r/furniture" title="r/furniture" xmlUrl="https://www.reddit.com/r/furniture/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/furniture/" />
+      <outline type="rss" text="r/Cabinetry" title="r/Cabinetry" xmlUrl="https://www.reddit.com/r/Cabinetry/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/Cabinetry/" />
+      <outline type="rss" text="r/manufacturing" title="r/manufacturing" xmlUrl="https://www.reddit.com/r/manufacturing/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/manufacturing/" />
+      <outline type="rss" text="r/Tools" title="r/Tools" xmlUrl="https://www.reddit.com/r/Tools/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/Tools/" />
+    </outline>
+    <outline text="💼 Менеджмент і кар'єра" title="💼 Менеджмент і кар'єра">
+      <outline type="rss" text="r/projectmanagement" title="r/projectmanagement" xmlUrl="https://www.reddit.com/r/projectmanagement/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/projectmanagement/" />
+      <outline type="rss" text="r/agile" title="r/agile" xmlUrl="https://www.reddit.com/r/agile/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/agile/" />
+      <outline type="rss" text="r/productivity" title="r/productivity" xmlUrl="https://www.reddit.com/r/productivity/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/productivity/" />
+      <outline type="rss" text="r/management" title="r/management" xmlUrl="https://www.reddit.com/r/management/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/management/" />
+      <outline type="rss" text="r/Leadership" title="r/Leadership" xmlUrl="https://www.reddit.com/r/Leadership/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/Leadership/" />
+      <outline type="rss" text="r/careerguidance" title="r/careerguidance" xmlUrl="https://www.reddit.com/r/careerguidance/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/careerguidance/" />
+      <outline type="rss" text="r/jobs" title="r/jobs" xmlUrl="https://www.reddit.com/r/jobs/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/jobs/" />
+      <outline type="rss" text="r/resumes" title="r/resumes" xmlUrl="https://www.reddit.com/r/resumes/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/resumes/" />
+    </outline>
+    <outline text="💼 ШІ" title="💼 ШІ">
+      <outline type="rss" text="r/ClaudeAI" title="r/ClaudeAI" xmlUrl="https://www.reddit.com/r/ClaudeAI/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/ClaudeAI/" />
+      <outline type="rss" text="r/Anthropic" title="r/Anthropic" xmlUrl="https://www.reddit.com/r/Anthropic/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/Anthropic/" />
+      <outline type="rss" text="r/artificial" title="r/artificial" xmlUrl="https://www.reddit.com/r/artificial/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/artificial/" />
+      <outline type="rss" text="r/ChatGPT" title="r/ChatGPT" xmlUrl="https://www.reddit.com/r/ChatGPT/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/ChatGPT/" />
+      <outline type="rss" text="r/OpenAI" title="r/OpenAI" xmlUrl="https://www.reddit.com/r/OpenAI/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/OpenAI/" />
+      <outline type="rss" text="r/LocalLLaMA" title="r/LocalLLaMA" xmlUrl="https://www.reddit.com/r/LocalLLaMA/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/LocalLLaMA/" />
+      <outline type="rss" text="r/PromptEngineering" title="r/PromptEngineering" xmlUrl="https://www.reddit.com/r/PromptEngineering/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/PromptEngineering/" />
+    </outline>
+    <outline text="💼 Вебдизайн і UX" title="💼 Вебдизайн і UX">
+      <outline type="rss" text="r/web_design" title="r/web_design" xmlUrl="https://www.reddit.com/r/web_design/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/web_design/" />
+      <outline type="rss" text="r/UXDesign" title="r/UXDesign" xmlUrl="https://www.reddit.com/r/UXDesign/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/UXDesign/" />
+      <outline type="rss" text="r/userexperience" title="r/userexperience" xmlUrl="https://www.reddit.com/r/userexperience/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/userexperience/" />
+      <outline type="rss" text="r/webdev" title="r/webdev" xmlUrl="https://www.reddit.com/r/webdev/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/webdev/" />
+      <outline type="rss" text="r/Wordpress" title="r/Wordpress" xmlUrl="https://www.reddit.com/r/Wordpress/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/Wordpress/" />
+    </outline>
+    <outline text="🔋 Здоров'я і сон" title="🔋 Здоров'я і сон">
+      <outline type="rss" text="r/Health" title="r/Health" xmlUrl="https://www.reddit.com/r/Health/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/Health/" />
+      <outline type="rss" text="r/sleep" title="r/sleep" xmlUrl="https://www.reddit.com/r/sleep/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/sleep/" />
+      <outline type="rss" text="r/insomnia" title="r/insomnia" xmlUrl="https://www.reddit.com/r/insomnia/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/insomnia/" />
+      <outline type="rss" text="r/longevity" title="r/longevity" xmlUrl="https://www.reddit.com/r/longevity/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/longevity/" />
+      <outline type="rss" text="r/HealthyFood" title="r/HealthyFood" xmlUrl="https://www.reddit.com/r/HealthyFood/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/HealthyFood/" />
+    </outline>
+    <outline text="🔋 Харчування і кухня" title="🔋 Харчування і кухня">
+      <outline type="rss" text="r/nutrition" title="r/nutrition" xmlUrl="https://www.reddit.com/r/nutrition/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/nutrition/" />
+      <outline type="rss" text="r/EatCheapAndHealthy" title="r/EatCheapAndHealthy" xmlUrl="https://www.reddit.com/r/EatCheapAndHealthy/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/EatCheapAndHealthy/" />
+      <outline type="rss" text="r/Cooking" title="r/Cooking" xmlUrl="https://www.reddit.com/r/Cooking/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/Cooking/" />
+      <outline type="rss" text="r/MealPrepSunday" title="r/MealPrepSunday" xmlUrl="https://www.reddit.com/r/MealPrepSunday/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/MealPrepSunday/" />
+      <outline type="rss" text="r/recipes" title="r/recipes" xmlUrl="https://www.reddit.com/r/recipes/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/recipes/" />
+      <outline type="rss" text="r/AskCulinary" title="r/AskCulinary" xmlUrl="https://www.reddit.com/r/AskCulinary/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/AskCulinary/" />
+    </outline>
+    <outline text="🔋 Спорт" title="🔋 Спорт">
+      <outline type="rss" text="r/bodyweightfitness" title="r/bodyweightfitness" xmlUrl="https://www.reddit.com/r/bodyweightfitness/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/bodyweightfitness/" />
+      <outline type="rss" text="r/walking" title="r/walking" xmlUrl="https://www.reddit.com/r/walking/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/walking/" />
+      <outline type="rss" text="r/Fitness" title="r/Fitness" xmlUrl="https://www.reddit.com/r/Fitness/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/Fitness/" />
+      <outline type="rss" text="r/homegym" title="r/homegym" xmlUrl="https://www.reddit.com/r/homegym/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/homegym/" />
+      <outline type="rss" text="r/loseit" title="r/loseit" xmlUrl="https://www.reddit.com/r/loseit/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/loseit/" />
+      <outline type="rss" text="r/flexibility" title="r/flexibility" xmlUrl="https://www.reddit.com/r/flexibility/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/flexibility/" />
+    </outline>
+    <outline text="🔋 Психіка" title="🔋 Психіка">
+      <outline type="rss" text="r/CBT" title="r/CBT" xmlUrl="https://www.reddit.com/r/CBT/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/CBT/" />
+      <outline type="rss" text="r/DecidingToBeBetter" title="r/DecidingToBeBetter" xmlUrl="https://www.reddit.com/r/DecidingToBeBetter/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/DecidingToBeBetter/" />
+      <outline type="rss" text="r/psychology" title="r/psychology" xmlUrl="https://www.reddit.com/r/psychology/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/psychology/" />
+      <outline type="rss" text="r/neuroscience" title="r/neuroscience" xmlUrl="https://www.reddit.com/r/neuroscience/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/neuroscience/" />
+      <outline type="rss" text="r/Anxiety" title="r/Anxiety" xmlUrl="https://www.reddit.com/r/Anxiety/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/Anxiety/" />
+      <outline type="rss" text="r/depression" title="r/depression" xmlUrl="https://www.reddit.com/r/depression/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/depression/" />
+      <outline type="rss" text="r/selfimprovement" title="r/selfimprovement" xmlUrl="https://www.reddit.com/r/selfimprovement/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/selfimprovement/" />
+      <outline type="rss" text="r/Mindfulness" title="r/Mindfulness" xmlUrl="https://www.reddit.com/r/Mindfulness/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/Mindfulness/" />
+      <outline type="rss" text="r/getdisciplined" title="r/getdisciplined" xmlUrl="https://www.reddit.com/r/getdisciplined/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/getdisciplined/" />
+      <outline type="rss" text="r/ADHD" title="r/ADHD" xmlUrl="https://www.reddit.com/r/ADHD/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/ADHD/" />
+    </outline>
+    <outline text="🔋 Мислення" title="🔋 Мислення">
+      <outline type="rss" text="r/criticalthinking" title="r/criticalthinking" xmlUrl="https://www.reddit.com/r/criticalthinking/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/criticalthinking/" />
+      <outline type="rss" text="r/changemyview" title="r/changemyview" xmlUrl="https://www.reddit.com/r/changemyview/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/changemyview/" />
+      <outline type="rss" text="r/slatestarcodex" title="r/slatestarcodex" xmlUrl="https://www.reddit.com/r/slatestarcodex/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/slatestarcodex/" />
+      <outline type="rss" text="r/skeptic" title="r/skeptic" xmlUrl="https://www.reddit.com/r/skeptic/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/skeptic/" />
+      <outline type="rss" text="r/logic" title="r/logic" xmlUrl="https://www.reddit.com/r/logic/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/logic/" />
+    </outline>
+    <outline text="🔋 Фінанси" title="🔋 Фінанси">
+      <outline type="rss" text="r/personalfinance" title="r/personalfinance" xmlUrl="https://www.reddit.com/r/personalfinance/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/personalfinance/" />
+      <outline type="rss" text="r/financialindependence" title="r/financialindependence" xmlUrl="https://www.reddit.com/r/financialindependence/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/financialindependence/" />
+      <outline type="rss" text="r/Frugal" title="r/Frugal" xmlUrl="https://www.reddit.com/r/Frugal/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/Frugal/" />
+      <outline type="rss" text="r/budget" title="r/budget" xmlUrl="https://www.reddit.com/r/budget/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/budget/" />
+      <outline type="rss" text="r/investing" title="r/investing" xmlUrl="https://www.reddit.com/r/investing/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/investing/" />
+      <outline type="rss" text="r/povertyfinance" title="r/povertyfinance" xmlUrl="https://www.reddit.com/r/povertyfinance/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/povertyfinance/" />
+    </outline>
+    <outline text="🔋 Порядок" title="🔋 Порядок">
+      <outline type="rss" text="r/declutter" title="r/declutter" xmlUrl="https://www.reddit.com/r/declutter/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/declutter/" />
+      <outline type="rss" text="r/minimalism" title="r/minimalism" xmlUrl="https://www.reddit.com/r/minimalism/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/minimalism/" />
+      <outline type="rss" text="r/CleaningTips" title="r/CleaningTips" xmlUrl="https://www.reddit.com/r/CleaningTips/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/CleaningTips/" />
+      <outline type="rss" text="r/organization" title="r/organization" xmlUrl="https://www.reddit.com/r/organization/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/organization/" />
+      <outline type="rss" text="r/ZeroWaste" title="r/ZeroWaste" xmlUrl="https://www.reddit.com/r/ZeroWaste/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/ZeroWaste/" />
+    </outline>
+    <outline text="❤️ Сім'я і стосунки" title="❤️ Сім'я і стосунки">
+      <outline type="rss" text="r/Marriage" title="r/Marriage" xmlUrl="https://www.reddit.com/r/Marriage/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/Marriage/" />
+      <outline type="rss" text="r/relationship_advice" title="r/relationship_advice" xmlUrl="https://www.reddit.com/r/relationship_advice/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/relationship_advice/" />
+      <outline type="rss" text="r/relationships" title="r/relationships" xmlUrl="https://www.reddit.com/r/relationships/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/relationships/" />
+      <outline type="rss" text="r/Parenting" title="r/Parenting" xmlUrl="https://www.reddit.com/r/Parenting/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/Parenting/" />
+      <outline type="rss" text="r/AgingParents" title="r/AgingParents" xmlUrl="https://www.reddit.com/r/AgingParents/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/AgingParents/" />
+    </outline>
+    <outline text="❤️ Люди" title="❤️ Люди">
+      <outline type="rss" text="r/socialskills" title="r/socialskills" xmlUrl="https://www.reddit.com/r/socialskills/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/socialskills/" />
+      <outline type="rss" text="r/MakeNewFriendsHere" title="r/MakeNewFriendsHere" xmlUrl="https://www.reddit.com/r/MakeNewFriendsHere/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/MakeNewFriendsHere/" />
+      <outline type="rss" text="r/networking" title="r/networking" xmlUrl="https://www.reddit.com/r/networking/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/networking/" />
+      <outline type="rss" text="r/introvert" title="r/introvert" xmlUrl="https://www.reddit.com/r/introvert/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/introvert/" />
+    </outline>
+    <outline text="❤️ Хобі: ігри" title="❤️ Хобі: ігри">
+      <outline type="rss" text="r/boardgames" title="r/boardgames" xmlUrl="https://www.reddit.com/r/boardgames/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/boardgames/" />
+      <outline type="rss" text="r/chess" title="r/chess" xmlUrl="https://www.reddit.com/r/chess/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/chess/" />
+      <outline type="rss" text="r/chessbeginners" title="r/chessbeginners" xmlUrl="https://www.reddit.com/r/chessbeginners/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/chessbeginners/" />
+      <outline type="rss" text="r/civ" title="r/civ" xmlUrl="https://www.reddit.com/r/civ/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/civ/" />
+      <outline type="rss" text="r/CivVII" title="r/CivVII" xmlUrl="https://www.reddit.com/r/CivVII/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/CivVII/" />
+      <outline type="rss" text="r/4Xgaming" title="r/4Xgaming" xmlUrl="https://www.reddit.com/r/4Xgaming/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/4Xgaming/" />
+      <outline type="rss" text="r/StrategyGames" title="r/StrategyGames" xmlUrl="https://www.reddit.com/r/StrategyGames/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/StrategyGames/" />
+    </outline>
+    <outline text="❤️ Хобі: руками й на природі" title="❤️ Хобі: руками й на природі">
+      <outline type="rss" text="r/Fishing" title="r/Fishing" xmlUrl="https://www.reddit.com/r/Fishing/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/Fishing/" />
+      <outline type="rss" text="r/PaintByNumbers" title="r/PaintByNumbers" xmlUrl="https://www.reddit.com/r/PaintByNumbers/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/PaintByNumbers/" />
+      <outline type="rss" text="r/painting" title="r/painting" xmlUrl="https://www.reddit.com/r/painting/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/painting/" />
+      <outline type="rss" text="r/learnart" title="r/learnart" xmlUrl="https://www.reddit.com/r/learnart/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/learnart/" />
+    </outline>
+    <outline text="❤️ Хобі: гітара" title="❤️ Хобі: гітара">
+      <outline type="rss" text="r/Guitar" title="r/Guitar" xmlUrl="https://www.reddit.com/r/Guitar/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/Guitar/" />
+      <outline type="rss" text="r/guitarlessons" title="r/guitarlessons" xmlUrl="https://www.reddit.com/r/guitarlessons/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/guitarlessons/" />
+    </outline>
+    <outline text="❤️ Хобі: вайбкодинг" title="❤️ Хобі: вайбкодинг">
+      <outline type="rss" text="r/vibecoding" title="r/vibecoding" xmlUrl="https://www.reddit.com/r/vibecoding/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/vibecoding/" />
+      <outline type="rss" text="r/ChatGPTCoding" title="r/ChatGPTCoding" xmlUrl="https://www.reddit.com/r/ChatGPTCoding/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/ChatGPTCoding/" />
+      <outline type="rss" text="r/cursor" title="r/cursor" xmlUrl="https://www.reddit.com/r/cursor/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/cursor/" />
+      <outline type="rss" text="r/ObsidianMD" title="r/ObsidianMD" xmlUrl="https://www.reddit.com/r/ObsidianMD/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/ObsidianMD/" />
+      <outline type="rss" text="r/SideProject" title="r/SideProject" xmlUrl="https://www.reddit.com/r/SideProject/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/SideProject/" />
+    </outline>
+    <outline text="❤️ Культура" title="❤️ Культура">
+      <outline type="rss" text="r/books" title="r/books" xmlUrl="https://www.reddit.com/r/books/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/books/" />
+      <outline type="rss" text="r/suggestmeabook" title="r/suggestmeabook" xmlUrl="https://www.reddit.com/r/suggestmeabook/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/suggestmeabook/" />
+      <outline type="rss" text="r/TrueFilm" title="r/TrueFilm" xmlUrl="https://www.reddit.com/r/TrueFilm/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/TrueFilm/" />
+      <outline type="rss" text="r/movies" title="r/movies" xmlUrl="https://www.reddit.com/r/movies/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/movies/" />
+      <outline type="rss" text="r/listentothis" title="r/listentothis" xmlUrl="https://www.reddit.com/r/listentothis/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/listentothis/" />
+      <outline type="rss" text="r/Poetry" title="r/Poetry" xmlUrl="https://www.reddit.com/r/Poetry/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/Poetry/" />
+      <outline type="rss" text="r/OCPoetry" title="r/OCPoetry" xmlUrl="https://www.reddit.com/r/OCPoetry/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/OCPoetry/" />
+    </outline>
+    <outline text="❤️ Світогляд" title="❤️ Світогляд">
+      <outline type="rss" text="r/Stoicism" title="r/Stoicism" xmlUrl="https://www.reddit.com/r/Stoicism/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/Stoicism/" />
+      <outline type="rss" text="r/philosophy" title="r/philosophy" xmlUrl="https://www.reddit.com/r/philosophy/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/philosophy/" />
+      <outline type="rss" text="r/sociology" title="r/sociology" xmlUrl="https://www.reddit.com/r/sociology/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/sociology/" />
+      <outline type="rss" text="r/history" title="r/history" xmlUrl="https://www.reddit.com/r/history/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/history/" />
+      <outline type="rss" text="r/AskHistorians" title="r/AskHistorians" xmlUrl="https://www.reddit.com/r/AskHistorians/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/AskHistorians/" />
+    </outline>
+    <outline text="❤️ Наука" title="❤️ Наука">
+      <outline type="rss" text="r/science" title="r/science" xmlUrl="https://www.reddit.com/r/science/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/science/" />
+      <outline type="rss" text="r/askscience" title="r/askscience" xmlUrl="https://www.reddit.com/r/askscience/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/askscience/" />
+      <outline type="rss" text="r/space" title="r/space" xmlUrl="https://www.reddit.com/r/space/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/space/" />
+      <outline type="rss" text="r/Physics" title="r/Physics" xmlUrl="https://www.reddit.com/r/Physics/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/Physics/" />
+      <outline type="rss" text="r/biology" title="r/biology" xmlUrl="https://www.reddit.com/r/biology/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/biology/" />
+    </outline>
+    <outline text="❤️ Україна й подорожі" title="❤️ Україна й подорожі">
+      <outline type="rss" text="r/ukraine" title="r/ukraine" xmlUrl="https://www.reddit.com/r/ukraine/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/ukraine/" />
+      <outline type="rss" text="r/reddit_ukraine" title="r/reddit_ukraine" xmlUrl="https://www.reddit.com/r/reddit_ukraine/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/reddit_ukraine/" />
+      <outline type="rss" text="r/travel" title="r/travel" xmlUrl="https://www.reddit.com/r/travel/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/travel/" />
+      <outline type="rss" text="r/solotravel" title="r/solotravel" xmlUrl="https://www.reddit.com/r/solotravel/top/.rss?t=week&amp;limit=7" htmlUrl="https://www.reddit.com/r/solotravel/" />
+    </outline>
+  </body>
+</opml>

@@ -1,0 +1,10 @@
+{
+  "name": "infocasting-feed",
+  "private": true,
+  "type": "module",
+  "description": "Збирання стрічки InfoCasting (запускається в GitHub Actions)",
+  "dependencies": {
+    "fast-xml-parser": "^5.12.0",
+    "node-html-parser": "^9.0.7"
+  }
+}

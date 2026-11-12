@@ -1,0 +1,161 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<opml version="2.0">
+  <head>
+    <title>BAZE: блоги й журнали (RSS Dashboard)</title>
+    <dateCreated>Tue, 20 Oct 2026 10:30:00 GMT</dateCreated>
+  </head>
+  <body>
+    <outline text="💼 Маркетинг і бренд" title="💼 Маркетинг і бренд">
+      <outline type="rss" text="AIN.UA" title="AIN.UA" xmlUrl="https://ain.ua/feed/" category="/покликання/маркетинг" />
+      <outline type="rss" text="Seth's Blog" title="Seth's Blog" xmlUrl="https://seths.blog/feed/" category="/покликання/маркетинг" />
+      <outline type="rss" text="Marketing Week" title="Marketing Week" xmlUrl="https://www.marketingweek.com/feed/" category="/покликання/маркетинг" />
+      <outline type="rss" text="Marketoonist" title="Marketoonist" xmlUrl="https://marketoonist.com/feed" category="/покликання/маркетинг" />
+      <outline type="rss" text="Marketer.ua" title="Marketer.ua" xmlUrl="https://marketer.ua/feed/" category="/покликання/маркетинг" />
+    </outline>
+    <outline text="💼 Інтернет-маркетинг і SMM" title="💼 Інтернет-маркетинг і SMM">
+      <outline type="rss" text="Search Engine Journal" title="Search Engine Journal" xmlUrl="https://www.searchenginejournal.com/feed/" category="/покликання/інтернет-маркетинг" />
+      <outline type="rss" text="Search Engine Land" title="Search Engine Land" xmlUrl="https://www.searchengineland.com/feed" category="/покликання/інтернет-маркетинг" />
+      <outline type="rss" text="Search Engine Roundtable" title="Search Engine Roundtable" xmlUrl="http://feeds.seroundtable.com/SearchEngineRoundtable1" category="/покликання/інтернет-маркетинг" />
+      <outline type="rss" text="PPC Land" title="PPC Land" xmlUrl="https://ppc.land/rss/" category="/покликання/інтернет-маркетинг" />
+      <outline type="rss" text="Netpeak Journal" title="Netpeak Journal" xmlUrl="https://netpeak.net/uk/blog/rss/" category="/покликання/інтернет-маркетинг" />
+      <outline type="rss" text="Social Media Examiner" title="Social Media Examiner" xmlUrl="https://www.socialmediaexaminer.com/feed/" category="/покликання/smm" />
+      <outline type="rss" text="Buffer Resources" title="Buffer Resources" xmlUrl="https://buffer.com/resources/rss/" category="/покликання/smm" />
+      <outline type="rss" text="Social Media Today" title="Social Media Today" xmlUrl="https://www.socialmediatoday.com/feeds/news/" category="/покликання/smm" />
+      <outline type="rss" text="Hootsuite Blog" title="Hootsuite Blog" xmlUrl="https://blog.hootsuite.com/feed/" category="/покликання/smm" />
+    </outline>
+    <outline text="💼 B2B і галузь" title="💼 B2B і галузь">
+      <outline type="rss" text="HubSpot Sales Blog" title="HubSpot Sales Blog" xmlUrl="https://blog.hubspot.com/sales/rss.xml" category="/покликання/b2b" />
+      <outline type="rss" text="Sales Gravy" title="Sales Gravy" xmlUrl="https://salesgravy.com/feed/" category="/покликання/b2b" />
+      <outline type="rss" text="Trade Show Executive (виставки)" title="Trade Show Executive (виставки)" xmlUrl="https://www.tradeshowexecutive.com/feed/" category="/покликання/b2b" />
+      <outline type="rss" text="Woodworking Network" title="Woodworking Network" xmlUrl="https://www.woodworkingnetwork.com/rss.xml" category="/покликання/галузь" />
+      <outline type="rss" text="Wood Industry" title="Wood Industry" xmlUrl="https://www.woodindustry.ca/feed/" category="/покликання/галузь" />
+      <outline type="rss" text="Woodshop News" title="Woodshop News" xmlUrl="https://www.woodshopnews.com/feed" category="/покликання/галузь" />
+      <outline type="rss" text="Panels &amp; Furniture Asia" title="Panels &amp; Furniture Asia" xmlUrl="https://www.panelsfurnitureasia.com/feed" category="/покликання/галузь" />
+      <outline type="rss" text="ToolGuyd (інструменти)" title="ToolGuyd (інструменти)" xmlUrl="https://www.toolguyd.com/feed/" category="/покликання/галузь" />
+    </outline>
+    <outline text="💼 Менеджмент і кар'єра" title="💼 Менеджмент і кар'єра">
+      <outline type="rss" text="Manager Tools" title="Manager Tools" xmlUrl="https://www.manager-tools.com/rss.xml" category="/покликання/менеджмент" />
+      <outline type="rss" text="Irrational Exuberance (Will Larson)" title="Irrational Exuberance (Will Larson)" xmlUrl="https://lethain.com/feeds/" category="/покликання/менеджмент" />
+      <outline type="rss" text="Leadership Freak" title="Leadership Freak" xmlUrl="https://leadershipfreak.blog/feed/" category="/покликання/менеджмент" />
+      <outline type="rss" text="Speka (бізнес і технології)" title="Speka (бізнес і технології)" xmlUrl="https://speka.ua/rss" category="/покликання/менеджмент" />
+      <outline type="rss" text="DOU" title="DOU" xmlUrl="https://dou.ua/feed/" category="/покликання/карєра" />
+      <outline type="rss" text="Happy Monday (кар'єра, HR)" title="Happy Monday (кар'єра, HR)" xmlUrl="https://happymonday.ua/feed" category="/покликання/карєра" />
+      <outline type="rss" text="Cal Newport" title="Cal Newport" xmlUrl="https://www.calnewport.com/feed/" category="/покликання/карєра" />
+      <outline type="rss" text="Ask a Manager" title="Ask a Manager" xmlUrl="https://www.askamanager.org/feed" category="/покликання/карєра" />
+    </outline>
+    <outline text="💼 ШІ і вебдизайн" title="💼 ШІ і вебдизайн">
+      <outline type="rss" text="Simon Willison (ШІ на практиці)" title="Simon Willison (ШІ на практиці)" xmlUrl="https://simonwillison.net/atom/everything/" category="/покликання/ші" />
+      <outline type="rss" text="One Useful Thing (Ethan Mollick)" title="One Useful Thing (Ethan Mollick)" xmlUrl="https://www.oneusefulthing.org/feed" category="/покликання/ші" />
+      <outline type="rss" text="Understanding AI" title="Understanding AI" xmlUrl="https://www.understandingai.org/feed" category="/покликання/ші" />
+      <outline type="rss" text="Import AI" title="Import AI" xmlUrl="https://importai.substack.com/feed" category="/покликання/ші" />
+      <outline type="rss" text="Nielsen Norman Group" title="Nielsen Norman Group" xmlUrl="https://www.nngroup.com/feed/rss/" category="/покликання/вебдизайн" />
+      <outline type="rss" text="Smashing Magazine" title="Smashing Magazine" xmlUrl="https://www.smashingmagazine.com/feed/" category="/покликання/вебдизайн" />
+      <outline type="rss" text="UX Collective" title="UX Collective" xmlUrl="https://uxdesign.cc/feed" category="/покликання/вебдизайн" />
+      <outline type="rss" text="Unbounce (лендінги)" title="Unbounce (лендінги)" xmlUrl="https://unbounce.com/feed/" category="/покликання/вебдизайн" />
+      <outline type="rss" text="A List Apart" title="A List Apart" xmlUrl="https://alistapart.com/main/feed/" category="/покликання/вебдизайн" />
+    </outline>
+    <outline text="🔋 Здоров'я, сон, спорт" title="🔋 Здоров'я, сон, спорт">
+      <outline type="rss" text="Sensible Medicine" title="Sensible Medicine" xmlUrl="https://www.sensible-med.com/feed" category="/ресурс/здоровя" />
+      <outline type="rss" text="Peter Attia MD" title="Peter Attia MD" xmlUrl="https://peterattiamd.com/feed/" category="/ресурс/здоровя" />
+      <outline type="rss" text="Українська правда. Життя" title="Українська правда. Життя" xmlUrl="https://life.pravda.com.ua/rss/" category="/ресурс/здоровя" />
+      <outline type="rss" text="Sleep Education (AASM)" title="Sleep Education (AASM)" xmlUrl="https://sleepeducation.org/feed/" category="/ресурс/здоровя/сон" />
+      <outline type="rss" text="Sleep Matters (безсоння, CBT-I)" title="Sleep Matters (безсоння, CBT-I)" xmlUrl="https://www.sleepmattersperth.com.au/blog/feed/" category="/ресурс/здоровя/сон" />
+      <outline type="rss" text="ScienceDaily: Sleep Disorders" title="ScienceDaily: Sleep Disorders" xmlUrl="https://www.sciencedaily.com/rss/mind_brain/sleep_disorders.xml" category="/ресурс/здоровя/сон" />
+      <outline type="rss" text="Nerd Fitness" title="Nerd Fitness" xmlUrl="https://www.nerdfitness.com/feed/" category="/ресурс/спорт" />
+      <outline type="rss" text="Barbell Medicine" title="Barbell Medicine" xmlUrl="https://www.barbellmedicine.com/feed/" category="/ресурс/спорт" />
+      <outline type="rss" text="Stronger by Science" title="Stronger by Science" xmlUrl="https://www.strongerbyscience.com/feed/" category="/ресурс/спорт" />
+      <outline type="rss" text="Mark's Daily Apple" title="Mark's Daily Apple" xmlUrl="https://www.marksdailyapple.com/feed/" category="/ресурс/спорт" />
+    </outline>
+    <outline text="🔋 Харчування" title="🔋 Харчування">
+      <outline type="rss" text="ScienceDaily: Nutrition" title="ScienceDaily: Nutrition" xmlUrl="https://www.sciencedaily.com/rss/health_medicine/nutrition.xml" category="/ресурс/харчування" />
+      <outline type="rss" text="Precision Nutrition" title="Precision Nutrition" xmlUrl="https://www.precisionnutrition.com/feed" category="/ресурс/харчування" />
+      <outline type="rss" text="Budget Bytes (рецепти)" title="Budget Bytes (рецепти)" xmlUrl="https://www.budgetbytes.com/feed/" category="/ресурс/харчування" />
+      <outline type="rss" text="The Kitchn" title="The Kitchn" xmlUrl="https://www.thekitchn.com/main.rss" category="/ресурс/харчування" />
+    </outline>
+    <outline text="🔋 Психіка і мислення" title="🔋 Психіка і мислення">
+      <outline type="rss" text="Ness Labs" title="Ness Labs" xmlUrl="https://nesslabs.com/feed" category="/ресурс/психіка" />
+      <outline type="rss" text="Psyche" title="Psyche" xmlUrl="https://psyche.co/feed" category="/ресурс/психіка" />
+      <outline type="rss" text="Beck Institute (КПТ)" title="Beck Institute (КПТ)" xmlUrl="https://beckinstitute.org/feed/" category="/ресурс/психіка" />
+      <outline type="rss" text="Psychiatric Times" title="Psychiatric Times" xmlUrl="https://www.psychiatrictimes.com/rss" category="/ресурс/психіка" />
+      <outline type="rss" text="The Transmitter (нейронаука)" title="The Transmitter (нейронаука)" xmlUrl="https://www.thetransmitter.org/feed/" category="/ресурс/психіка" />
+      <outline type="rss" text="Farnam Street" title="Farnam Street" xmlUrl="https://fs.blog/feed/" category="/ресурс/мислення" />
+      <outline type="rss" text="StopFake" title="StopFake" xmlUrl="https://www.stopfake.org/uk/feed/" category="/ресурс/мислення" />
+      <outline type="rss" text="Детектор медіа" title="Детектор медіа" xmlUrl="https://detector.media/rss" category="/ресурс/мислення" />
+      <outline type="rss" text="Bellingcat (OSINT)" title="Bellingcat (OSINT)" xmlUrl="https://www.bellingcat.com/feed/" category="/ресурс/мислення" />
+      <outline type="rss" text="Clearer Thinking" title="Clearer Thinking" xmlUrl="https://www.clearerthinking.org/blog-feed.xml" category="/ресурс/мислення" />
+    </outline>
+    <outline text="🔋 Фінанси і порядок" title="🔋 Фінанси і порядок">
+      <outline type="rss" text="Finance.ua" title="Finance.ua" xmlUrl="https://news.finance.ua/ua/rss" category="/ресурс/фінанси" />
+      <outline type="rss" text="Of Dollars and Data" title="Of Dollars and Data" xmlUrl="https://ofdollarsanddata.com/feed/" category="/ресурс/фінанси" />
+      <outline type="rss" text="Monevator" title="Monevator" xmlUrl="https://monevator.com/feed/" category="/ресурс/фінанси" />
+      <outline type="rss" text="HumbleDollar" title="HumbleDollar" xmlUrl="https://humbledollar.com/feed/" category="/ресурс/фінанси" />
+      <outline type="rss" text="The Minimalists" title="The Minimalists" xmlUrl="https://www.theminimalists.com/feed/" category="/ресурс/гігієна" />
+      <outline type="rss" text="Be More with Less" title="Be More with Less" xmlUrl="https://bemorewithless.com/feed/" category="/ресурс/гігієна" />
+      <outline type="rss" text="Apartment Therapy" title="Apartment Therapy" xmlUrl="https://www.apartmenttherapy.com/main.rss" category="/ресурс/гігієна" />
+    </outline>
+    <outline text="❤️ Сім'я і люди" title="❤️ Сім'я і люди">
+      <outline type="rss" text="Gottman Institute Blog" title="Gottman Institute Blog" xmlUrl="https://www.gottman.com/blog/feed/" category="/сенс/дружина" />
+      <outline type="rss" text="Greater Good: Relationships" title="Greater Good: Relationships" xmlUrl="https://greatergood.berkeley.edu/site/rss/relationships" category="/сенс/дружина" />
+      <outline type="rss" text="Prepare/Enrich (стосунки)" title="Prepare/Enrich (стосунки)" xmlUrl="https://www.prepare-enrich.com/feed/" category="/сенс/дружина" />
+      <outline type="rss" text="Greater Good: Parenting &amp; Family" title="Greater Good: Parenting &amp; Family" xmlUrl="https://greatergood.berkeley.edu/site/rss/parenting_family" category="/сенс/рідні" />
+      <outline type="rss" text="Нова українська школа" title="Нова українська школа" xmlUrl="https://nus.org.ua/feed/" category="/сенс/рідні" />
+      <outline type="rss" text="Освіторія" title="Освіторія" xmlUrl="https://osvitoria.media/feed/" category="/сенс/рідні" />
+      <outline type="rss" text="Greater Good: Social Connection" title="Greater Good: Social Connection" xmlUrl="https://greatergood.berkeley.edu/site/rss/social_connection" category="/сенс/люди" />
+      <outline type="rss" text="Psychology Today" title="Psychology Today" xmlUrl="https://www.psychologytoday.com/us/front/feed" category="/сенс/люди" />
+      <outline type="rss" text="The Art of Manliness" title="The Art of Manliness" xmlUrl="https://www.artofmanliness.com/feed/" category="/сенс/люди" />
+    </outline>
+    <outline text="❤️ Хобі" title="❤️ Хобі">
+      <outline type="rss" text="BoardGameGeek Blog" title="BoardGameGeek Blog" xmlUrl="https://boardgamegeek.com/rss/blog/1" category="/сенс/хобі/настолки" />
+      <outline type="rss" text="Shut Up &amp; Sit Down" title="Shut Up &amp; Sit Down" xmlUrl="https://www.shutupandsitdown.com/feed/" category="/сенс/хобі/настолки" />
+      <outline type="rss" text="BoardGameWire (новини настолок)" title="BoardGameWire (новини настолок)" xmlUrl="https://www.boardgamewire.com/index.php/feed/" category="/сенс/хобі/настолки" />
+      <outline type="rss" text="Chess.com News" title="Chess.com News" xmlUrl="https://www.chess.com/rss/news" category="/сенс/хобі/настолки" />
+      <outline type="rss" text="ChessBase News" title="ChessBase News" xmlUrl="https://en.chessbase.com/feed" category="/сенс/хобі/настолки" />
+      <outline type="rss" text="Wired2Fish" title="Wired2Fish" xmlUrl="https://www.wired2fish.com/feed" category="/сенс/хобі/рибалка" />
+      <outline type="rss" text="The Fishing Wire" title="The Fishing Wire" xmlUrl="https://www.thefishingwire.com/feed/" category="/сенс/хобі/рибалка" />
+      <outline type="rss" text="Anglers Journal" title="Anglers Journal" xmlUrl="https://www.anglersjournal.com/feed" category="/сенс/хобі/рибалка" />
+      <outline type="rss" text="Muddy Colors (ілюстрація)" title="Muddy Colors (ілюстрація)" xmlUrl="https://www.muddycolors.com/feed/" category="/сенс/хобі/малювання" />
+      <outline type="rss" text="Paint Here (James Gurney)" title="Paint Here (James Gurney)" xmlUrl="https://jamesgurney.substack.com/feed" category="/сенс/хобі/малювання" />
+      <outline type="rss" text="Will Kemp Art School" title="Will Kemp Art School" xmlUrl="https://willkempartschool.com/feed/" category="/сенс/хобі/малювання" />
+      <outline type="rss" text="Hyperallergic (мистецтво)" title="Hyperallergic (мистецтво)" xmlUrl="https://hyperallergic.com/feed/" category="/сенс/хобі/малювання" />
+      <outline type="rss" text="Guitar World" title="Guitar World" xmlUrl="https://www.guitarworld.com/feeds/all" category="/сенс/хобі/гітара" />
+      <outline type="rss" text="Premier Guitar" title="Premier Guitar" xmlUrl="https://www.premierguitar.com/feeds/feed.rss" category="/сенс/хобі/гітара" />
+      <outline type="rss" text="Classical Guitar Shed" title="Classical Guitar Shed" xmlUrl="https://www.classicalguitarshed.com/feed/" category="/сенс/хобі/гітара" />
+      <outline type="rss" text="CivFanatics" title="CivFanatics" xmlUrl="https://civfanatics.com/feed/" category="/сенс/хобі/цивілізація" />
+      <outline type="rss" text="Civilization VII (новини Steam)" title="Civilization VII (новини Steam)" xmlUrl="https://store.steampowered.com/feeds/news/app/1295660/" category="/сенс/хобі/цивілізація" />
+      <outline type="rss" text="Wargamer (стратегії)" title="Wargamer (стратегії)" xmlUrl="https://www.wargamer.com/mainrss.xml" category="/сенс/хобі/цивілізація" />
+      <outline type="rss" text="Elevate (Addy Osmani)" title="Elevate (Addy Osmani)" xmlUrl="https://addyo.substack.com/feed" category="/сенс/хобі/вайбкодинг" />
+      <outline type="rss" text="Harper Reed's Blog" title="Harper Reed's Blog" xmlUrl="https://harper.blog/index.xml" category="/сенс/хобі/вайбкодинг" />
+      <outline type="rss" text="Latent Space" title="Latent Space" xmlUrl="https://www.latent.space/feed" category="/сенс/хобі/вайбкодинг" />
+      <outline type="rss" text="Martin Fowler" title="Martin Fowler" xmlUrl="https://martinfowler.com/feed.atom" category="/сенс/хобі/вайбкодинг" />
+    </outline>
+    <outline text="❤️ Культура і творчість" title="❤️ Культура і творчість">
+      <outline type="rss" text="Читомо" title="Читомо" xmlUrl="https://chytomo.com/feed/" category="/сенс/культура/книги" />
+      <outline type="rss" text="Literary Hub" title="Literary Hub" xmlUrl="https://lithub.com/feed/" category="/сенс/культура/книги" />
+      <outline type="rss" text="Book Riot" title="Book Riot" xmlUrl="https://bookriot.com/feed/" category="/сенс/культура/книги" />
+      <outline type="rss" text="RogerEbert.com" title="RogerEbert.com" xmlUrl="https://www.rogerebert.com/feed" category="/сенс/культура/фільми" />
+      <outline type="rss" text="Little White Lies" title="Little White Lies" xmlUrl="https://lwlies.com/feed/" category="/сенс/культура/фільми" />
+      <outline type="rss" text="Slant Magazine" title="Slant Magazine" xmlUrl="https://www.slantmagazine.com/feed/" category="/сенс/культура/фільми" />
+      <outline type="rss" text="LB.ua: Культура" title="LB.ua: Культура" xmlUrl="https://lb.ua/rss/ukr/culture.xml" category="/сенс/культура/фільми" />
+      <outline type="rss" text="The Quietus" title="The Quietus" xmlUrl="https://thequietus.com/feed/" category="/сенс/культура/музика" />
+      <outline type="rss" text="NPR Music" title="NPR Music" xmlUrl="https://feeds.npr.org/1039/rss.xml" category="/сенс/культура/музика" />
+      <outline type="rss" text="Poetry Foundation: Poem of the Day" title="Poetry Foundation: Poem of the Day" xmlUrl="https://www.poetryfoundation.org/rss/poemoftheday" category="/сенс/культура/поезія" />
+      <outline type="rss" text="Збруч" title="Збруч" xmlUrl="https://zbruc.eu/rss.xml" category="/сенс/культура/поезія" />
+      <outline type="rss" text="Poetry School" title="Poetry School" xmlUrl="https://poetryschool.com/feed/" category="/сенс/творчість/вірші" />
+      <outline type="rss" text="Writer's Digest: Write Better Poetry" title="Writer's Digest: Write Better Poetry" xmlUrl="https://www.writersdigest.com/write-better-poetry/feed" category="/сенс/творчість/вірші" />
+    </outline>
+    <outline text="❤️ Світогляд, наука, подорожі" title="❤️ Світогляд, наука, подорожі">
+      <outline type="rss" text="Aeon" title="Aeon" xmlUrl="https://aeon.co/feed.rss" category="/сенс/світогляд" />
+      <outline type="rss" text="Daily Nous (філософія)" title="Daily Nous (філософія)" xmlUrl="https://dailynous.com/feed/" category="/сенс/світогляд" />
+      <outline type="rss" text="1000-Word Philosophy" title="1000-Word Philosophy" xmlUrl="https://1000wordphilosophy.com/feed/" category="/сенс/світогляд" />
+      <outline type="rss" text="Public Books (соціологія, есеї)" title="Public Books (соціологія, есеї)" xmlUrl="https://www.publicbooks.org/feed/" category="/сенс/світогляд" />
+      <outline type="rss" text="The Marginalian" title="The Marginalian" xmlUrl="https://www.themarginalian.org/feed/" category="/сенс/світогляд" />
+      <outline type="rss" text="Quanta Magazine" title="Quanta Magazine" xmlUrl="https://www.quantamagazine.org/feed/" category="/сенс/наука" />
+      <outline type="rss" text="Nautilus" title="Nautilus" xmlUrl="https://nautil.us/feed/" category="/сенс/наука" />
+      <outline type="rss" text="Science News" title="Science News" xmlUrl="https://www.sciencenews.org/feed" category="/сенс/наука" />
+      <outline type="rss" text="Universe Space Tech (космос)" title="Universe Space Tech (космос)" xmlUrl="https://universemagazine.com/feed/" category="/сенс/наука" />
+      <outline type="rss" text="Atlas Obscura" title="Atlas Obscura" xmlUrl="https://www.atlasobscura.com/feeds/latest" category="/сенс/подорожі" />
+      <outline type="rss" text="Nomadic Matt" title="Nomadic Matt" xmlUrl="https://www.nomadicmatt.com/feed/" category="/сенс/подорожі" />
+      <outline type="rss" text="Adventurous Kate" title="Adventurous Kate" xmlUrl="https://www.adventurouskate.com/feed/" category="/сенс/подорожі" />
+    </outline>
+  </body>
+</opml>
