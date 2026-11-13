@@ -134,7 +134,7 @@ const Card = React.memo(function Card({ movie: it, onOpen }: { movie: Item; onOp
     <Pressable style={[StyleSheet.absoluteFill, styles.cardInner]} onPress={onOpen} disabled={!onOpen}>
       {hasImg ? (
         <View style={styles.imgWrap}>
-          <Photo uri={it.i} rounded={0} style={StyleSheet.absoluteFill} />
+          <Photo uri={it.i} rounded={0} icon={null} style={StyleSheet.absoluteFill} />
           <LinearGradient colors={['transparent', 'rgba(24,29,42,0.0)', colors.card]} locations={[0, 0.55, 1]} style={StyleSheet.absoluteFill} />
         </View>
       ) : (

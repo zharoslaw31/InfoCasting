@@ -6,7 +6,7 @@ import { ActivityIndicator, Platform, Pressable, ScrollView, StyleSheet, Text, u
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SwipeDeck, SwipeDeckHandle } from '../../components/SwipeDeck';
 import { GradientButton, RoundButton, Segmented, Toast } from '../../components/ui';
-import { buildTaste, interleave, plural, tasteScore, useFeed } from '../../lib/feed';
+import { buildTaste, interleave, plural, tasteScore, timeAgo, useFeed } from '../../lib/feed';
 import { openArticle } from '../../lib/nav';
 import { useHaptics, useStore } from '../../lib/store';
 import { Item, Kind, SwipeKind } from '../../lib/types';
@@ -18,7 +18,7 @@ const ALL_KINDS: Kind[] = ['rss', 'tg', 'reddit'];
 export default function CastingScreen() {
   const insets = useSafeAreaInsets();
   const { state, seen, dispatch } = useStore();
-  const { feed, sourceOf, loading, error, refresh } = useFeed();
+  const { feed, sourceOf, loading, error, refresh, building } = useFeed();
   const { save } = useSaveToObsidian();
   const haptic = useHaptics();
   const deck = useRef<SwipeDeckHandle>(null);
@@ -62,7 +62,7 @@ export default function CastingScreen() {
     return c;
   }, [feed, seen, muted, sourceOf]);
 
-  const deckKey = `${feed?.updated}|${kinds.join()}|${mode}|${shuffleTick}|${muted.size}`;
+  const deckKey = `${feed?.updated}|${kinds.join()}|${mode}|${shuffleTick}|${[...muted].join()}`;
 
   useEffect(() => {
     if (!state.ready || !feed) return;
@@ -86,6 +86,24 @@ export default function CastingScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deckKey, state.ready]);
 
+  // картки, повернуті з «Пропущеного» в Бібліотеці, знову в колоді (першими)
+  const poolRef = useRef(pool);
+  poolRef.current = pool;
+  const prevSkipped = useRef<Set<string> | null>(null);
+  useEffect(() => {
+    const now = new Set(state.skipped.map((e) => e.id));
+    const prev = prevSkipped.current;
+    prevSkipped.current = now;
+    if (!prev) return;
+    const back = new Set([...prev].filter((id) => !now.has(id)));
+    if (!back.size) return;
+    setQueue((q) => {
+      const inQ = new Set(q.map((x) => x.id));
+      const add = poolRef.current.filter((it) => back.has(it.id) && !inQ.has(it.id));
+      return add.length ? [...add, ...q] : q;
+    });
+  }, [state.skipped]);
+
   const lastSwiped = useRef<Item[]>([]);
   const handleSwipe = useCallback(
     (it: Item, kind: SwipeKind) => {
@@ -106,6 +124,8 @@ export default function CastingScreen() {
   const undo = () => {
     const it = lastSwiped.current.shift();
     if (!it) return;
+    const last = state.history[state.history.length - 1];
+    if (last?.kind === 'save' && last.id === it.id && state.saved.some((e) => e.id === it.id)) showToast('Повернули картку. Нотатка в базі лишилась — її можна видалити в Obsidian');
     dispatch({ type: 'undo' });
     haptic('warning');
     setQueue((q) => [it, ...q.filter((x) => x.id !== it.id)]);
@@ -114,6 +134,8 @@ export default function CastingScreen() {
   // клавіатура на комп'ютері: ← пропустити, → прочитаю, ↑ в Obsidian, Backspace — скасувати
   const undoRef = useRef(undo);
   undoRef.current = undo;
+  const queueRef = useRef(queue);
+  queueRef.current = queue;
   useEffect(() => {
     if (Platform.OS !== 'web') return;
     const onKey = (e: KeyboardEvent) => {
@@ -124,6 +146,7 @@ export default function CastingScreen() {
       else if (e.key === 'ArrowLeft') deck.current?.swipe('nope');
       else if (e.key === 'ArrowUp') deck.current?.swipe('save');
       else if (e.key === 'Backspace') undoRef.current();
+      else if (e.key === 'Enter' && queueRef.current[0]) openArticle(queueRef.current[0].id);
       else return;
       e.preventDefault();
     };
@@ -148,7 +171,11 @@ export default function CastingScreen() {
             Info<Text style={{ color: colors.accent }}>Casting</Text>
           </Text>
           <Text style={styles.sub} numberOfLines={1}>
-            {!feed ? (loading ? 'Завантажуємо стрічку…' : ' ') : `${left} ${plural(left, ['матеріал', 'матеріали', 'матеріалів'])} у колоді · блоги ${kindCounts.rss} · TG ${kindCounts.tg} · Reddit ${kindCounts.reddit}`}
+            {!feed
+              ? loading
+                ? 'Завантажуємо стрічку…'
+                : ' '
+              : `${left} у колоді · ${building ? 'збираємо свіже…' : `оновлено ${timeAgo(feed.updated)}`}`}
           </Text>
         </View>
         <View style={{ flexDirection: 'row', gap: 8 }}>
@@ -179,10 +206,10 @@ export default function CastingScreen() {
           value={kindValue}
           onChange={setKind}
           options={[
-            { value: 'all', label: 'Усе' },
-            { value: 'rss', label: 'Блоги' },
-            { value: 'tg', label: 'Telegram' },
-            { value: 'reddit', label: 'Reddit' },
+            { value: 'all', label: 'Усе', count: feed ? kindCounts.all : undefined },
+            { value: 'rss', label: 'Блоги', count: feed ? kindCounts.rss : undefined },
+            { value: 'tg', label: 'Telegram', count: feed ? kindCounts.tg : undefined },
+            { value: 'reddit', label: 'Reddit', count: feed ? kindCounts.reddit : undefined },
           ]}
         />
       </View>
@@ -289,7 +316,7 @@ const styles = StyleSheet.create({
   tipRow: { flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 10 },
   tipIcon: { width: 34, height: 34, borderRadius: 17, alignItems: 'center', justifyContent: 'center' },
   tipText: { flex: 1, color: colors.textDim, fontSize: 14, lineHeight: 19, fontWeight: '600' },
-  screen: { flex: 1, backgroundColor: colors.bg },
+  screen: { flex: 1, backgroundColor: colors.bg, width: '100%', maxWidth: 680, alignSelf: 'center' },
   header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20 },
   logo: { color: colors.text, fontSize: 26, fontWeight: '900', letterSpacing: -0.5 },
   sub: { color: colors.textMuted, fontSize: 13, marginTop: 2, fontWeight: '600' },

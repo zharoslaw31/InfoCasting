@@ -64,6 +64,7 @@ type Action =
   | { type: 'undo' }
   | { type: 'add'; item: Item; list: ListName; path?: string }
   | { type: 'remove'; id: string; list: ListName }
+  | { type: 'clear'; list: ListName }
   | { type: 'markRead'; items: Item[] }
   | { type: 'settings'; settings: Partial<Settings> }
   | { type: 'obsidian'; obsidian: Partial<Settings['obsidian']> }
@@ -169,8 +170,11 @@ function reducer(s: State, a: Action): State {
     case 'undo': {
       const last = s.history[s.history.length - 1];
       if (!last) return s;
-      const list: ListName = last.kind === 'like' ? 'liked' : last.kind === 'nope' ? 'skipped' : 'saved';
-      return { ...s, history: s.history.slice(0, -1), [list]: without(s[list], last.id) };
+      const history = s.history.slice(0, -1);
+      if (last.kind === 'nope') return { ...s, history, skipped: without(s.skipped, last.id) };
+      // свайп вгору: якщо збереження не вдалось, матеріал потрапив у «Прочитати» — прибираємо і звідти
+      if (last.kind === 'save') return { ...s, history, saved: without(s.saved, last.id), liked: without(s.liked, last.id) };
+      return { ...s, history, liked: without(s.liked, last.id) };
     }
     case 'add': {
       const e: LibraryEntry = { id: a.item.id, at: Date.now(), item: a.item, ...(a.path ? { path: a.path } : {}) };
@@ -180,6 +184,8 @@ function reducer(s: State, a: Action): State {
     }
     case 'remove':
       return { ...s, [a.list]: without(s[a.list], a.id) };
+    case 'clear':
+      return { ...s, [a.list]: [] };
     case 'markRead': {
       let read = s.read;
       const ids = new Set(read.map((e) => e.id));

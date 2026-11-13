@@ -17,7 +17,7 @@ const METHOD_LABEL = { github: 'у репозиторій бази (GitHub)', ur
 export default function ProfileScreen() {
   const insets = useSafeAreaInsets();
   const { state, dispatch } = useStore();
-  const { feed, sources, refresh } = useFeed();
+  const { feed, sources, refresh, building } = useFeed();
   const [toast, setToast] = useState<string | null>(null);
   const [confirmReset, setConfirmReset] = useState(false);
   const s = state.settings;
@@ -112,7 +112,7 @@ export default function ProfileScreen() {
           <Row
             icon="albums-outline"
             title="Джерела"
-            sub={`${sources.length} джерел · вимкнено ${s.mutedSources.length + s.mutedGroups.length}`}
+            sub={`${sources.length} ${plural(sources.length, ['джерело', 'джерела', 'джерел'])} · вимкнено ${s.mutedSources.length + s.mutedGroups.length}`}
             onPress={() => router.push('/sources')}
           />
           {Platform.OS !== 'web' ? (
@@ -124,7 +124,7 @@ export default function ProfileScreen() {
         <View style={styles.card}>
           <Text style={styles.p}>
             {feed
-              ? `Оновлено ${timeAgo(feed.updated)}: ${feed.items.length} матеріалів. Нові збираються самі кожні 30 хвилин.`
+              ? `Оновлено ${timeAgo(feed.updated)}: ${feed.items.length} ${plural(feed.items.length, ['матеріал', 'матеріали', 'матеріалів'])}. ${building ? 'Саме збираємо свіже — за кілька хвилин підтягнеться.' : s.obsidian.token ? 'Нові збираються кожні 30 хвилин; якщо сервер запізнюється, додаток сам попросить зібрати свіже.' : 'Нові збираються кожні 30 хвилин (сервер GitHub інколи запізнюється).'}`
               : 'Стрічка ще не завантажилась.'}
           </Text>
           {feed && feed.reddit !== 'oauth' ? (
@@ -165,7 +165,7 @@ export default function ProfileScreen() {
 
         <SectionTitle>Дані</SectionTitle>
         <View style={styles.card}>
-          <Text style={styles.sub}>Без входу бібліотека й налаштування зберігаються лише на цьому пристрої. Токен GitHub завжди лишається тільки на пристрої.</Text>
+          <Text style={styles.sub}>{s.obsidian.syncToken ? 'Без входу бібліотека й налаштування зберігаються лише на цьому пристрої. Після входу ключ GitHub теж зберігається в акаунті (вимикається в Obsidian → «Ключ на всіх пристроях»).' : 'Без входу бібліотека й налаштування зберігаються лише на цьому пристрої. Ключ GitHub лишається тільки на цьому пристрої.'}</Text>
           <Pressable
             onPress={() => {
               if (!confirmReset) return setConfirmReset(true);

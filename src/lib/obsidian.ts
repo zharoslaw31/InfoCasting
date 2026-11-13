@@ -243,11 +243,11 @@ export async function copyMarkdown(md: string) {
 }
 
 /** Запустити збирання стрічки зараз (потрібен токен з доступом Actions до репозиторію InfoCasting). */
-export async function triggerFeedUpdate(token: string) {
+export async function triggerFeedUpdate(token: string, auto = false) {
   const r = await fetch('https://api.github.com/repos/zharoslaw31/InfoCasting/actions/workflows/update-feed.yml/dispatches', {
     method: 'POST',
     headers: { accept: 'application/vnd.github+json', authorization: `Bearer ${token.trim()}`, 'content-type': 'application/json' },
-    body: JSON.stringify({ ref: 'main' }),
+    body: JSON.stringify(auto ? { ref: 'main', inputs: { auto: true } } : { ref: 'main' }),
   });
   return r.status === 204;
 }

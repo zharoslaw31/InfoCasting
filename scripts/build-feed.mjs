@@ -100,7 +100,7 @@ const safeCp = (n) => {
     return '';
   }
 };
-const clean = (s) => decode(String(s ?? '').replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim();
+const clean = (s) => decode(String(s ?? '').replace(/<[^>]+>/g, ' ')).replace(/[\u200b-\u200d\ufeff]/g, '').replace(/\s+/g, ' ').trim();
 
 function latinShare(text) {
   const lat = (String(text).match(/[A-Za-z]/g) || []).length;

@@ -17,7 +17,8 @@ const TABS: Record<string, { title: string; icon: IconName; iconActive: IconName
 };
 
 function TabBar({ state, navigateToTab, emitter, insets }: BottomTabBarProps) {
-  const { state: store } = useStore();
+  const { state: store, readIds } = useStore();
+  const unreadLiked = React.useMemo(() => store.liked.filter((e) => !readIds.has(e.id)).length, [store.liked, readIds]);
   const bottom = Math.max(insets.bottom, 12);
   return (
     <View pointerEvents="box-none" style={[styles.wrap, { paddingBottom: bottom }]}>
@@ -31,7 +32,7 @@ function TabBar({ state, navigateToTab, emitter, insets }: BottomTabBarProps) {
           const cfg = TABS[route.name];
           if (!cfg) return null;
           const focused = state.index === index;
-          const badge = route.name === 'library' ? store.liked.length : 0;
+          const badge = route.name === 'library' ? unreadLiked : 0;
           return (
             <Pressable
               key={route.key}

@@ -18,13 +18,13 @@ export function Photo({
   title?: string;
   style?: StyleProp<ViewStyle>;
   rounded?: number;
-  icon?: IconName;
+  icon?: IconName | null;
 }) {
   return (
     <View style={[{ borderRadius: rounded, overflow: 'hidden', backgroundColor: colors.card }, style]}>
       <LinearGradient colors={['#1C2740', '#10141E']} style={StyleSheet.absoluteFill} />
       <View style={[StyleSheet.absoluteFill, styles.center]}>
-        <Ionicons name={icon} size={28} color={colors.textMuted} />
+        {icon ? <Ionicons name={icon} size={28} color={colors.textMuted} /> : null}
         {title ? (
           <Text numberOfLines={2} style={styles.posterFallback}>
             {title}
@@ -193,12 +193,17 @@ export function Segmented<T extends string>({
       {options.map((o) => {
         const active = o.value === value;
         return (
-          <Pressable key={o.value} onPress={() => onChange(o.value)} style={[styles.segItem]}>
+          <Pressable key={o.value} onPress={() => onChange(o.value)} style={[styles.segItem, compact && o.count !== undefined && { paddingVertical: 6 }]}>
             {active ? <LinearGradient colors={gradients.brand} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={[StyleSheet.absoluteFill, { borderRadius: radius.pill }]} /> : null}
             <Text style={[styles.segText, compact && { fontSize: 12.5 }, active && { color: '#fff' }]} numberOfLines={1}>
               {o.label}
-              {o.count !== undefined ? `${compact ? ' ' : '  '}${o.count}` : ''}
+              {o.count !== undefined && !compact ? `  ${o.count}` : ''}
             </Text>
+            {o.count !== undefined && compact ? (
+              <Text style={[styles.segCount, active && { color: 'rgba(255,255,255,0.85)' }]} numberOfLines={1}>
+                {o.count > 9999 ? Math.round(o.count / 1000) + 'K' : o.count}
+              </Text>
+            ) : null}
             {o.dot ? <View style={styles.segDot} /> : null}
           </Pressable>
         );
@@ -273,7 +278,8 @@ const styles = StyleSheet.create({
   sectionRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 22, marginBottom: 12 },
   section: { color: colors.text, fontSize: 18, fontWeight: '800', letterSpacing: 0.2 },
   seg: { flexDirection: 'row', backgroundColor: colors.bgElevated, borderRadius: radius.pill, padding: 4, borderWidth: 1, borderColor: colors.border },
-  segItem: { flex: 1, paddingVertical: 10, alignItems: 'center', borderRadius: radius.pill },
+  segItem: { flex: 1, paddingVertical: 10, paddingHorizontal: 2, alignItems: 'center', justifyContent: 'center', borderRadius: radius.pill },
+  segCount: { color: colors.textMuted, fontWeight: '800', fontSize: 11, marginTop: 1 },
   segText: { color: colors.textDim, fontWeight: '700', fontSize: 14 },
   segDot: { position: 'absolute', top: 5, right: 6, width: 8, height: 8, borderRadius: 4, backgroundColor: colors.cooked },
 });

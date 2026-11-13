@@ -5,7 +5,7 @@ import { FlatList, Pressable, RefreshControl, ScrollView, StyleSheet, Text, Text
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ItemRow } from '../../components/ItemRow';
 import { Chip, Segmented, Toast } from '../../components/ui';
-import { AREA, AREAS, timeAgo, useFeed } from '../../lib/feed';
+import { AREA, AREAS, plural, timeAgo, useFeed } from '../../lib/feed';
 import { openArticle } from '../../lib/nav';
 import { useStore } from '../../lib/store';
 import { Area, Item, Kind } from '../../lib/types';
@@ -16,7 +16,7 @@ type KindFilter = 'all' | Kind;
 
 export default function FeedScreen() {
   const insets = useSafeAreaInsets();
-  const { feed, sourceOf, sources, loading, refresh, error } = useFeed();
+  const { feed, sourceOf, sources, loading, refresh, error, building } = useFeed();
   const { state, dispatch, isLiked, isSaved, readIds } = useStore();
   const { saveOrAsk, busy } = useSaveToObsidian();
   const [kind, setKind] = useState<KindFilter>('all');
@@ -115,7 +115,7 @@ export default function FeedScreen() {
         <View style={{ flex: 1 }}>
           <Text style={styles.h1}>Стрічка</Text>
           <Text style={styles.sub} numberOfLines={1}>
-            {feed ? `оновлено ${timeAgo(feed.updated)}${failed ? ` · ${failed} джерел мовчать` : ''}` : loading ? 'Завантаження…' : (error ?? '')}
+            {feed ? `${building ? 'збираємо свіже…' : `оновлено ${timeAgo(feed.updated)}`}${failed ? ` · ${failed} ${plural(failed, ['джерело мовчить', 'джерела мовчать', 'джерел мовчать'])}` : ''}` : loading ? 'Завантаження…' : (error ?? '')}
           </Text>
         </View>
         <Pressable
@@ -207,7 +207,7 @@ export default function FeedScreen() {
         ListHeaderComponent={
           items.length ? (
             <View style={styles.listHead}>
-              <Text style={styles.count}>{items.length} матеріалів</Text>
+              <Text style={styles.count}>{items.length} {plural(items.length, ['матеріал', 'матеріали', 'матеріалів'])}</Text>
               {items.some((it) => !readIds.has(it.id)) ? (
                 <Pressable onPress={() => dispatch({ type: 'markRead', items })} hitSlop={6}>
                   <Text style={styles.markAll}>✓ Позначити все прочитаним</Text>
@@ -229,7 +229,7 @@ export default function FeedScreen() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.bg },
+  screen: { flex: 1, backgroundColor: colors.bg, width: '100%', maxWidth: 760, alignSelf: 'center' },
   header: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 20 },
   h1: { color: colors.text, fontSize: 26, fontWeight: '900', letterSpacing: -0.5 },
   sub: { color: colors.textMuted, fontSize: 13, marginTop: 2, fontWeight: '600' },

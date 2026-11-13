@@ -68,6 +68,7 @@ export function useArticle(it: Item | undefined, translate: boolean) {
   const [loading, setLoading] = useState(true);
   const [translating, setTranslating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
     if (!it) return;
@@ -100,6 +101,7 @@ export function useArticle(it: Item | undefined, translate: boolean) {
     if (!it || !content || !translate || tr || !needsTranslation(content, it)) return;
     let alive = true;
     setTranslating(true);
+    setError(null);
     translateContent(it, content)
       .then((t) => alive && setTr(t))
       .catch(() => alive && setError('Не вдалося перекласти — показуємо оригінал'))
@@ -107,9 +109,9 @@ export function useArticle(it: Item | undefined, translate: boolean) {
     return () => {
       alive = false;
     };
-  }, [it, content, translate, tr]);
+  }, [it, content, translate, tr, attempt]);
 
-  return { content, tr, loading, translating, error };
+  return { content, tr, loading, translating, error, retry: () => setAttempt((n) => n + 1) };
 }
 
 /** Коментарі напряму з Reddit (якщо збирач не встиг їх узяти). */
@@ -124,10 +126,22 @@ async function liveRedditComments(rid: string): Promise<Comment[]> {
       if (c.kind !== 't1') continue;
       const d = c.data;
       if (d.stickied || d.author === 'AutoModerator' || /^\[(deleted|removed)\]$/.test(d.body)) continue;
-      out.push({ a: d.author, s: d.score, t: d.body.slice(0, 3000), d: depth });
+      out.push({ a: d.author, s: d.score, t: mdPlain(d.body).slice(0, 3000), d: depth });
       if (depth < 2) walk((d.replies?.data?.children as typeof children)?.slice(0, depth ? 2 : 3), depth + 1);
     }
   };
   walk(data?.[1]?.data?.children, 0);
   return out;
 }
+
+/** Markdown коментаря Reddit → простий текст (посилання, жирний, курсив, цитати). */
+const mdPlain = (t: string) =>
+  t
+    .replace(/\[([^\]]+)\]\((https?:[^)]+)\)/g, '$1')
+    .replace(/(\*\*|__)(.+?)\1/g, '$2')
+    .replace(/(^|[\s(])[*_]([^*_\n]+)[*_](?=[\s).,!?:;]|$)/g, '$1$2')
+    .replace(/~~(.+?)~~/g, '$1')
+    .replace(/^&gt;\s?|^>\s?/gm, '')
+    .replace(/&amp;/g, '&')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
