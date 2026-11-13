@@ -2,12 +2,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { AppState, Platform } from 'react-native';
 import BUNDLED_SOURCES from '../../scripts/sources.json';
+import { triggerFeedUpdate } from './obsidian';
+import { useStore } from './store';
 import { Area, Content, Feed, Item, Kind, Source } from './types';
 
 /** Дані збирає GitHub Actions (Update feed) кожні 30 хвилин у гілку `data`. */
 export const DATA_BASE = 'https://raw.githubusercontent.com/zharoslaw31/InfoCasting/data';
 const CACHE_KEY = 'infocasting/feed/v1';
 const REFRESH_MS = 10 * 60 * 1000;
+/** GitHub запускає розклад нерегулярно (буває раз на кілька годин), тож застара стрічка сама просить збирання. */
+const STALE_MS = 45 * 60 * 1000;
+const KICK_KEY = 'infocasting/feed/kick';
 
 export const KIND: Record<Kind, { label: string; many: string; emoji: string; icon: 'newspaper-outline' | 'paper-plane-outline' | 'logo-reddit' }> = {
   rss: { label: 'Блоги', many: 'Блоги й журнали', emoji: '📰', icon: 'newspaper-outline' },
@@ -29,6 +34,8 @@ type FeedCtx = {
   sourceOf: (id: string) => Source | undefined;
   loading: boolean;
   error: string | null;
+  /** стрічку саме збирають на сервері (запущено з цього пристрою) */
+  building: boolean;
   refresh: () => Promise<void>;
   byId: (id: string) => Item | undefined;
 };
@@ -42,6 +49,9 @@ export function FeedProvider({ children }: { children: React.ReactNode }) {
   const [error, setError] = useState<string | null>(null);
   const lastLoad = useRef(0);
   const busy = useRef(false);
+  const [building, setBuilding] = useState(false);
+  const { state } = useStore();
+  const token = state.ready ? state.settings.obsidian.token.trim() : '';
 
   const refresh = useCallback(async () => {
     if (busy.current) return;
@@ -102,11 +112,33 @@ export function FeedProvider({ children }: { children: React.ReactNode }) {
     return () => sub.remove();
   }, [refresh]);
 
+  // стрічка застара, а є ключ GitHub — просимо сервер зібрати свіже (не частіше разу на 30 хв з пристрою)
+  const kicking = useRef(false);
+  useEffect(() => {
+    if (kicking.current || !feed || !token || loading || lastLoad.current === 0 || Date.now() - feed.updated < STALE_MS) return;
+    kicking.current = true;
+    (async () => {
+      const k = JSON.parse((await AsyncStorage.getItem(KICK_KEY).catch(() => null)) ?? '{}') as { at?: number; denied?: number };
+      if (Date.now() - (k.at ?? 0) < 30 * 60e3 || Date.now() - (k.denied ?? 0) < 6 * 3600e3) return;
+      const ok = await triggerFeedUpdate(token, true).catch(() => false);
+      AsyncStorage.setItem(KICK_KEY, JSON.stringify(ok ? { at: Date.now() } : { denied: Date.now() })).catch(() => {});
+      if (!ok) return;
+      setBuilding(true);
+      // збирання триває 1–3 хвилини — підтягуємо результат
+      [100e3, 180e3, 300e3].forEach((ms) => setTimeout(refresh, ms));
+      setTimeout(() => setBuilding(false), 310e3);
+    })().finally(() => setTimeout(() => (kicking.current = false), 60e3));
+  }, [feed, token, loading, refresh]);
+
+  useEffect(() => {
+    if (building && feed && Date.now() - feed.updated < STALE_MS) setBuilding(false);
+  }, [building, feed]);
+
   const value = useMemo<FeedCtx>(() => {
     const srcMap = new Map(sources.map((s) => [s.id, s]));
     const itemMap = new Map((feed?.items ?? []).map((it) => [it.id, it]));
-    return { feed, sources, sourceOf: (id) => srcMap.get(id), loading, error, refresh, byId: (id) => itemMap.get(id) };
-  }, [feed, sources, loading, error, refresh]);
+    return { feed, sources, sourceOf: (id) => srcMap.get(id), loading, error, building, refresh, byId: (id) => itemMap.get(id) };
+  }, [feed, sources, loading, error, building, refresh]);
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

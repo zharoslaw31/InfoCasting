@@ -14,7 +14,14 @@ const currentBuild = () =>
     .sort()
     .join('|');
 
-async function check() {
+/** Чи можна перезавантажити зараз, не зіпсувавши роботу: не пишемо текст і не у вікні збереження. */
+const safeToReload = () => {
+  const a = document.activeElement as HTMLElement | null;
+  if (a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA')) return false;
+  return !/\/(save|obsidian)(\/|$)/.test(location.pathname);
+};
+
+async function check(startup = false) {
   try {
     const mine = currentBuild();
     if (!mine) return;
@@ -22,6 +29,8 @@ async function check() {
     const html = await res.text();
     const latest = [...new Set(html.match(SCRIPT_RE) ?? [])].sort().join('|');
     if (latest && latest !== mine) {
+      // посеред заповнення форми не перезавантажуємо — перевіримо пізніше
+      if (!startup && !safeToReload()) return;
       // оновлюємо кеш самої сторінки, інакше телефон може перезавантажити стару копію
       await Promise.all([location.href, `${location.pathname.split('/').slice(0, 2).join('/')}/`].map((u) => fetch(u, { cache: 'reload' }).catch(() => null)));
       location.reload();
@@ -31,7 +40,7 @@ async function check() {
 
 export function startAutoUpdate() {
   if (Platform.OS !== 'web' || typeof document === 'undefined') return;
-  check();
+  check(true);
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') check();
   });

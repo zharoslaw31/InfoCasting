@@ -33,7 +33,7 @@ export default function ArticleScreen() {
     () => byId(id) ?? [...state.liked, ...state.saved, ...state.read, ...state.skipped].find((e) => e.id === id)?.item,
     [id, byId, state.liked, state.saved, state.read, state.skipped],
   );
-  const { content, tr, loading, translating, error } = useArticle(it, !showOrig);
+  const { content, tr, loading, translating, error, retry } = useArticle(it, !showOrig);
 
   useEffect(() => {
     if (it) dispatch({ type: 'markRead', items: [it] });
@@ -120,7 +120,13 @@ export default function ArticleScreen() {
               <Text style={styles.bannerText}>Перекладаю українською…</Text>
             </View>
           ) : null}
-          {error ? <Text style={[styles.bannerText, { marginTop: 10 }]}>{error}</Text> : null}
+          {error && !translating ? (
+            <Pressable onPress={retry} style={styles.banner}>
+              <Ionicons name="refresh" size={16} color={colors.gold} />
+              <Text style={[styles.bannerText, { flex: 1 }]}>{error}</Text>
+              <Text style={[styles.bannerText, { textDecorationLine: 'underline' }]}>Ще раз</Text>
+            </Pressable>
+          ) : null}
 
           {loading ? (
             <ActivityIndicator color={colors.accent} style={{ marginTop: 30 }} />
@@ -166,7 +172,12 @@ export default function ArticleScreen() {
               {loading ? null : comments?.length ? (
                 comments.map((c, i) => <CommentView key={i} c={c} />)
               ) : (
-                <Text style={styles.noteText}>Коментарі не завантажились. Вони є на Reddit.</Text>
+                <Pressable onPress={() => openUrl(it.u)}>
+                  <Text style={styles.noteText}>
+                    {it.nc ? 'Коментарі не вдалося завантажити. ' : 'Коментарів поки немає. '}
+                    <Text style={{ color: colors.reddit, fontWeight: '800' }}>Відкрити обговорення на Reddit →</Text>
+                  </Text>
+                </Pressable>
               )}
             </View>
           ) : null}

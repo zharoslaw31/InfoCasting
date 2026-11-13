@@ -5,6 +5,11 @@ name: Update feed
 # або вручну: Actions → Update feed → Run workflow.
 on:
   workflow_dispatch:
+    inputs:
+      auto:
+        description: 'Запуск із додатка: пропустити, якщо стрічка свіжа'
+        type: boolean
+        default: false
   schedule:
     - cron: '7,37 * * * *'
   push:
@@ -41,12 +46,21 @@ jobs:
           else
             mkdir -p data-out
           fi
+      - name: Skip if fresh
+        id: fresh
+        if: github.event_name == 'workflow_dispatch' && inputs.auto
+        run: |
+          age=$(node -e "try{console.log(Math.round((Date.now()-require('./data-out/feed.json').updated)/60000))}catch{console.log(9999)}")
+          echo "Стрічці $age хв"
+          if [ "$age" -lt 20 ]; then echo "skip=1" >> "$GITHUB_OUTPUT"; fi
       - name: Build feed
+        if: steps.fresh.outputs.skip != '1'
         env:
           REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
           REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
         run: node scripts/build-feed.mjs data-out
       - name: Publish data
+        if: steps.fresh.outputs.skip != '1'
         run: |
           tmp=$(mktemp -d)
           cp -r data-out/feed.json data-out/cache.json data-out/sources.json data-out/c "$tmp"/

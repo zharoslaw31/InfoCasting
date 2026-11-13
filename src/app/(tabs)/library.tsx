@@ -12,6 +12,12 @@ import { useSaveToObsidian } from '../../lib/useSave';
 import { colors, radius, TAB_BAR_HEIGHT } from '../../theme';
 
 const NOTE: Record<ListName, string> = { liked: 'відкладено', saved: 'в Obsidian', read: 'прочитано', skipped: 'пропущено' };
+const HINT: Record<ListName, string> = {
+  liked: 'Свайп вправо або закладка — і матеріал тут',
+  saved: 'Нотатки лишаються в базі, тут — лише список',
+  read: 'Усе, що ви відкривали',
+  skipped: '«У Кастинг» повертає картку в колоду',
+};
 const EMPTY: Record<ListName, [string, string]> = {
   liked: ['🔖', 'Тут будуть матеріали, які ви відклали на потім: свайп вправо в Кастингу або закладка в Стрічці.'],
   saved: ['💎', 'Тут — усе, що ви зберегли в Obsidian: свайп вгору або кнопка «В Obsidian».'],
@@ -27,13 +33,17 @@ export default function LibraryScreen() {
   const [list, setList] = useState<ListName>('liked');
   const [q, setQ] = useState('');
   const [toast, setToast] = useState<string | null>(null);
+  const [confirmClear, setConfirmClear] = useState(false);
   const tr = state.settings.translate;
 
   const data = useMemo(() => {
     const needle = q.trim().toLocaleLowerCase('uk');
     const all: LibraryEntry[] = state[list];
     if (!needle) return all;
-    return all.filter((e) => `${e.item.t} ${e.item.tu ?? ''} ${e.item.x} ${sourceOf(e.item.s)?.name ?? ''}`.toLocaleLowerCase('uk').includes(needle));
+    return all.filter((e) => {
+      const hay = `${e.item.t} ${e.item.tu ?? ''} ${e.item.x} ${e.item.xu ?? ''} ${e.item.r ?? ''} ${sourceOf(e.item.s)?.name ?? ''}`.toLocaleLowerCase('uk');
+      return needle.split(/\s+/).every((w) => hay.includes(w));
+    });
   }, [state, list, q, sourceOf]);
 
   const showToast = (t: string) => {
@@ -54,7 +64,10 @@ export default function LibraryScreen() {
         <Segmented
           compact
           value={list}
-          onChange={setList}
+          onChange={(v) => {
+            setList(v);
+            setConfirmClear(false);
+          }}
           options={[
             { value: 'liked', label: 'Прочитати', count: state.liked.length },
             { value: 'saved', label: 'Obsidian', count: state.saved.length },
@@ -66,14 +79,33 @@ export default function LibraryScreen() {
       <View style={styles.search}>
         <Ionicons name="search" size={18} color={colors.textMuted} />
         <TextInput value={q} onChangeText={setQ} placeholder="Пошук у бібліотеці" placeholderTextColor={colors.textMuted} style={styles.input} />
+        {q ? (
+          <Pressable onPress={() => setQ('')} hitSlop={8} accessibilityLabel="Очистити пошук">
+            <Ionicons name="close-circle" size={18} color={colors.textMuted} />
+          </Pressable>
+        ) : null}
       </View>
-      {(list === 'read' || list === 'skipped') && state[list].length ? (
-        <Pressable
-          onPress={() => state[list].forEach((e) => dispatch({ type: 'remove', id: e.id, list }))}
-          style={{ alignSelf: 'flex-end', paddingHorizontal: 18, paddingTop: 8 }}
-        >
-          <Text style={{ color: colors.nope, fontWeight: '800', fontSize: 13 }}>Очистити список</Text>
-        </Pressable>
+      {state[list].length ? (
+        <View style={styles.listHead}>
+          <Text style={styles.count}>{HINT[list]}</Text>
+          {list !== 'saved' ? (
+            <Pressable
+              hitSlop={6}
+              onPress={() => {
+                if (!confirmClear) {
+                  setConfirmClear(true);
+                  setTimeout(() => setConfirmClear(false), 4000);
+                  return;
+                }
+                dispatch({ type: 'clear', list });
+                setConfirmClear(false);
+                showToast('Список очищено');
+              }}
+            >
+              <Text style={{ color: colors.nope, fontWeight: '800', fontSize: 13 }}>{confirmClear ? 'Точно очистити?' : 'Очистити'}</Text>
+            </Pressable>
+          ) : null}
+        </View>
       ) : null}
       <FlatList
         data={data}
@@ -93,6 +125,13 @@ export default function LibraryScreen() {
               onOpen={() => openArticle(e.id)}
               onLike={() => (isLiked(e.id) ? dispatch({ type: 'remove', id: e.id, list: 'liked' }) : dispatch({ type: 'add', item: e.item, list: 'liked' }))}
               onSave={() => saveOrAsk(e.item).then((r) => r && showToast((r.ok ? '✓ ' : '⚠️ ') + r.text))}
+              extra={
+                list === 'skipped'
+                  ? { icon: 'arrow-undo-outline', label: 'У Кастинг', color: colors.accent, onPress: () => (dispatch({ type: 'remove', id: e.id, list }), showToast('Картка повернеться в Кастинг')) }
+                  : list === 'read' || list === 'saved'
+                    ? { icon: 'close', label: 'Прибрати', onPress: () => dispatch({ type: 'remove', id: e.id, list }) }
+                    : undefined
+              }
             />
             {list === 'saved' && e.path ? <Text style={styles.path}>📁 {e.path}</Text> : null}
           </View>
@@ -110,12 +149,14 @@ export default function LibraryScreen() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.bg },
+  screen: { flex: 1, backgroundColor: colors.bg, width: '100%', maxWidth: 760, alignSelf: 'center' },
   header: { paddingHorizontal: 20 },
   h1: { color: colors.text, fontSize: 26, fontWeight: '900', letterSpacing: -0.5 },
   sub: { color: colors.textMuted, fontSize: 13, marginTop: 2, fontWeight: '600' },
   search: { flexDirection: 'row', alignItems: 'center', gap: 8, marginHorizontal: 14, marginTop: 10, paddingHorizontal: 14, height: 42, borderRadius: radius.pill, backgroundColor: colors.bgElevated, borderWidth: 1, borderColor: colors.border },
   input: { flex: 1, color: colors.text, fontSize: 15, height: '100%', outlineStyle: 'none' } as object,
+  listHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 10, paddingHorizontal: 18, paddingTop: 10, paddingBottom: 2 },
+  count: { flex: 1, color: colors.textMuted, fontSize: 12, fontWeight: '700' },
   path: { color: colors.textMuted, fontSize: 11, paddingHorizontal: 16, paddingBottom: 8, marginTop: -4 },
   empty: { alignItems: 'center', padding: 40 },
   emptyText: { color: colors.textDim, fontSize: 15, marginTop: 10, textAlign: 'center', lineHeight: 21 },

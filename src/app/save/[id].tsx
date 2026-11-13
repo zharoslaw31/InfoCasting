@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Linking, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Chip, GhostButton, GradientButton, Segmented } from '../../components/ui';
@@ -42,6 +42,16 @@ export default function SaveScreen() {
   const [thoughts, setThoughts] = useState('');
   const [status, setStatus] = useState<NoteStatus>(state.read.some((e) => e.id === id) ? 'прочитано' : 'хочу');
   const [result, setResult] = useState<{ ok: boolean; text: string; path?: string; open?: string } | null>(null);
+  // сторінку відкрили за посиланням — матеріал і джерело з'являються після завантаження стрічки
+  const [touched, setTouched] = useState(false);
+  useEffect(() => {
+    if (!it || touched) return;
+    setTitle(defaultTitle(it));
+    if (src?.topic) {
+      setTopic(src.topic);
+      setDir(src.topic.split('/')[0]);
+    }
+  }, [it?.id, src?.topic]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!it) {
     return (
@@ -101,14 +111,35 @@ export default function SaveScreen() {
         </Text>
 
         <Text style={styles.label}>Назва нотатки</Text>
-        <TextInput value={title} onChangeText={setTitle} style={[styles.input, { minHeight: 72 }]} placeholderTextColor={colors.textMuted} multiline />
+        <TextInput
+          value={title}
+          onChangeText={(t) => {
+            setTitle(t);
+            setTouched(true);
+          }} style={[styles.input, { minHeight: 96, textAlignVertical: 'top' }]} placeholderTextColor={colors.textMuted} multiline />
 
         <Text style={styles.label}>Тема</Text>
-        <Segmented compact value={dir} onChange={setDir} options={DIRS.map((d) => ({ value: d.key, label: d.label }))} />
+        <Segmented
+          compact
+          value={dir}
+          onChange={(d) => {
+            setDir(d);
+            setTouched(true);
+            if (topic && !topic.startsWith(d + '/')) setTopic(null);
+          }}
+          options={DIRS.map((d) => ({ value: d.key, label: d.label }))} />
         <View style={styles.wrap}>
           <Chip label="Без теми" active={!topic} onPress={() => setTopic(null)} />
           {topics.map((t) => (
-            <Chip key={t.tag} label={(t.sub ? '↳ ' : '') + t.tag.split('/').slice(1).join('/')} active={topic === t.tag} onPress={() => setTopic(t.tag)} />
+            <Chip
+              key={t.tag}
+              label={(t.sub ? '↳ ' : '') + t.tag.split('/').slice(1).join('/')}
+              active={topic === t.tag}
+              onPress={() => {
+                setTopic(topic === t.tag ? null : t.tag);
+                setTouched(true);
+              }}
+            />
           ))}
         </View>
         {topic ? (
@@ -123,7 +154,7 @@ export default function SaveScreen() {
           onChangeText={setThoughts}
           style={[styles.input, { minHeight: 96, textAlignVertical: 'top' }]}
           multiline
-          placeholder={'Що зачепило? Кожен рядок — окремий пункт\n«3 ключових думок»'}
+          placeholder={'Що зачепило? Кожен рядок — окремий пункт\n«3 ключові думки»'}
           placeholderTextColor={colors.textMuted}
         />
 

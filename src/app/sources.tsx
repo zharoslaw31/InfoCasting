@@ -3,7 +3,7 @@ import React, { useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Segmented } from '../components/ui';
-import { AREA, AREAS, KIND, timeAgo, useFeed } from '../lib/feed';
+import { AREA, AREAS, KIND, plural, timeAgo, useFeed } from '../lib/feed';
 import { goBack } from '../lib/nav';
 import { useStore } from '../lib/store';
 import { Kind, Source } from '../lib/types';
@@ -64,6 +64,15 @@ export default function SourcesScreen() {
               ? 'Пости-оповіщення про тривоги, відбої й загрози ховаються самі.'
               : 'Список узято з вашої бази Obsidian (BAZE-блоги.opml). Вимкніть зайве, і воно зникне з Кастингу й Стрічки.'}
         </Text>
+        {mutedSrc.size + mutedGrp.size ? (
+          <Pressable
+            onPress={() => dispatch({ type: 'settings', settings: { mutedSources: [], mutedGroups: [] } })}
+            style={styles.resetBtn}
+          >
+            <Ionicons name="refresh" size={16} color={colors.accent} />
+            <Text style={styles.resetText}>Увімкнути все ({mutedSrc.size + mutedGrp.size} вимкнено)</Text>
+          </Pressable>
+        ) : null}
         {groups.map(([g, list]) => {
           const gOff = mutedGrp.has(g);
           const isOpen = open === g;
@@ -75,7 +84,7 @@ export default function SourcesScreen() {
                 <View style={{ flex: 1 }}>
                   <Text style={[styles.groupTitle, gOff && { color: colors.textMuted }]}>{/^\p{L}/u.test(g) ? `${area.emoji} ${g}` : g}</Text>
                   <Text style={styles.sub}>
-                    {list.length} {kind === 'reddit' ? `груп · ${list.flatMap((s) => s.subs ?? []).length} сабреддітів` : 'джерел'} · {n} свіжих
+                    {list.length} {kind === 'reddit' ? `${plural(list.length, ['група', 'групи', 'груп'])} · ${list.flatMap((s) => s.subs ?? []).length} r/` : plural(list.length, ['джерело', 'джерела', 'джерел'])} · {n} {plural(n, ['свіжий', 'свіжі', 'свіжих'])}
                     {list[0].topic ? ` · #${list[0].topic}` : ''}
                   </Text>
                 </View>
@@ -121,5 +130,7 @@ const styles = StyleSheet.create({
   groupTitle: { color: colors.text, fontSize: 16, fontWeight: '800' },
   sub: { color: colors.textMuted, fontSize: 12, fontWeight: '600', marginTop: 2, lineHeight: 17 },
   src: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingHorizontal: 14, paddingVertical: 10, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: colors.border },
+  resetBtn: { flexDirection: 'row', alignItems: 'center', gap: 6, alignSelf: 'flex-start', paddingHorizontal: 12, paddingVertical: 8, borderRadius: radius.pill, borderWidth: 1, borderColor: colors.accent + '66', marginBottom: 12 },
+  resetText: { color: colors.accent, fontWeight: '800', fontSize: 13 },
   srcName: { color: colors.text, fontSize: 15, fontWeight: '700' },
 });

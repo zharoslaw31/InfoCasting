@@ -19,9 +19,11 @@ type Props = {
   onSave?: () => void;
   /** підпис праворуч зверху замість часу (напр. «збережено 2 дні тому») */
   note?: string;
+  /** додаткова дія (напр. «повернути в Кастинг», «прибрати зі списку») */
+  extra?: { icon: React.ComponentProps<typeof Ionicons>['name']; label: string; onPress: () => void; color?: string };
 };
 
-export const ItemRow = React.memo(function ItemRow({ it, src, translate, read, liked, saved, saving, onOpen, onLike, onSave, note }: Props) {
+export const ItemRow = React.memo(function ItemRow({ it, src, translate, read, liked, saved, saving, onOpen, onLike, onSave, note, extra }: Props) {
   const kindColor = it.k === 'tg' ? colors.tg : it.k === 'reddit' ? colors.reddit : colors.accent;
   const title = titleOf(it, translate);
   const ex = excerptOf(it, translate);
@@ -55,6 +57,12 @@ export const ItemRow = React.memo(function ItemRow({ it, src, translate, read, l
           {it.nc ? <Text style={styles.stat}>💬 {shortNum(it.nc)}</Text> : null}
           {it.v ? <Text style={styles.stat}>👁 {it.v}</Text> : null}
           <View style={{ flex: 1 }} />
+          {extra ? (
+            <Pressable hitSlop={8} onPress={extra.onPress} accessibilityLabel={extra.label} style={styles.extra}>
+              <Ionicons name={extra.icon} size={16} color={extra.color ?? colors.textMuted} />
+              <Text style={[styles.extraText, extra.color ? { color: extra.color } : null]}>{extra.label}</Text>
+            </Pressable>
+          ) : null}
           {onLike ? (
             <Pressable hitSlop={8} onPress={onLike} accessibilityLabel={liked ? 'Прибрати з «Прочитати»' : 'Прочитати пізніше'} style={styles.act}>
               <Ionicons name={liked ? 'bookmark' : 'bookmark-outline'} size={19} color={liked ? colors.like : colors.textMuted} />
@@ -81,5 +89,7 @@ const styles = StyleSheet.create({
   thumb: { width: 76, height: 76, borderRadius: radius.sm, backgroundColor: colors.card },
   actions: { flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 6, minHeight: 30 },
   stat: { color: colors.textMuted, fontSize: 12, fontWeight: '700' },
+  extra: { flexDirection: 'row', alignItems: 'center', gap: 4, height: 30, paddingHorizontal: 6 },
+  extraText: { color: colors.textMuted, fontSize: 12, fontWeight: '800' },
   act: { width: 34, height: 30, alignItems: 'center', justifyContent: 'center' },
 });
