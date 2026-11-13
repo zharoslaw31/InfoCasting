@@ -41,7 +41,7 @@ export default function SaveScreen() {
   const [dir, setDir] = useState(() => (src?.topic ?? 'покликання').split('/')[0]);
   const [thoughts, setThoughts] = useState('');
   const [status, setStatus] = useState<NoteStatus>(state.read.some((e) => e.id === id) ? 'прочитано' : 'хочу');
-  const [result, setResult] = useState<{ ok: boolean; text: string; path?: string } | null>(null);
+  const [result, setResult] = useState<{ ok: boolean; text: string; path?: string; open?: string } | null>(null);
 
   if (!it) {
     return (
@@ -64,15 +64,22 @@ export default function SaveScreen() {
     return (
       <View style={[styles.screen, { paddingTop: insets.top + 40, paddingHorizontal: 22, alignItems: 'center' }]}>
         <Text style={{ fontSize: 56 }}>💎</Text>
-        <Text style={styles.doneTitle}>Збережено в базу</Text>
+        <Text style={styles.doneTitle}>{result.open ? 'Нотатка готова' : 'Збережено в базу'}</Text>
         <Text style={[styles.muted, { textAlign: 'center', marginTop: 8 }]}>{result.path}</Text>
         <Text style={[styles.muted, { textAlign: 'center', marginTop: 12 }]}>
-          {o.method === 'github'
+          {result.open
+            ? 'Натисніть кнопку нижче — Obsidian відкриється і створить нотатку.'
+            : o.method === 'github'
             ? 'Нотатка вже в репозиторії бази. Obsidian підтягне її, коли відкриєте базу (Obsidian Git), або натисніть «Pull» вручну.'
             : 'Нотатку передано в Obsidian.'}
         </Text>
         <View style={{ width: '100%', maxWidth: 420, marginTop: 24, gap: 10 }}>
-          <GradientButton title="Відкрити в Obsidian" icon="open-outline" colorsPair={gradients.cooked} onPress={() => openUrl(obsidianOpenUrl(o.vault, result.path ?? ''))} />
+          <GradientButton
+            title={result.open ? 'Створити нотатку в Obsidian' : 'Відкрити в Obsidian'}
+            icon="open-outline"
+            colorsPair={gradients.cooked}
+            onPress={() => openUrl(result.open ?? obsidianOpenUrl(o.vault, result.path ?? ''))}
+          />
           <GhostButton title="Готово" icon="checkmark" onPress={goBack} />
         </View>
       </View>

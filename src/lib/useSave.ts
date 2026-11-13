@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import { router } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { loadContent, useFeed } from './feed';
@@ -22,7 +23,7 @@ export function useSaveToObsidian() {
   const o = state.settings.obsidian;
 
   const save = useCallback(
-    async (it: Item, pre?: { content?: Content | null; tr?: Translated | null; extra?: NoteExtra }): Promise<{ ok: boolean; text: string; path?: string }> => {
+    async (it: Item, pre?: { content?: Content | null; tr?: Translated | null; extra?: NoteExtra }): Promise<{ ok: boolean; text: string; path?: string; open?: string }> => {
       if (o.method === 'github' && !o.token.trim()) {
         router.push('/obsidian');
         return { ok: false, text: 'Спершу підключіть базу Obsidian' };
@@ -34,14 +35,14 @@ export function useSaveToObsidian() {
         let tr = pre?.tr ?? null;
         if (!tr && content && state.settings.translate && needsTranslation(content, it)) tr = await translateContent(it, content).catch(() => null);
         const { title, md } = buildNote(it, sourceOf(it.s), content, tr, o, pre?.extra);
-        const r = await saveToObsidian(o, title, md);
+        const r = await saveToObsidian(o, title, md, !!pre?.extra && Platform.OS === 'web');
         if (!r.ok) {
           haptic('warning');
           return { ok: false, text: r.error };
         }
         dispatch({ type: 'add', item: it, list: 'saved', path: r.path });
         haptic('success');
-        return { ok: true, text: `Збережено ${r.how}: ${title}`, path: r.path };
+        return { ok: true, text: `Збережено ${r.how}: ${title}`, path: r.path, open: r.open };
       } finally {
         setBusy(null);
       }

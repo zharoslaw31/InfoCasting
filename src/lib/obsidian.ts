@@ -123,7 +123,7 @@ export function buildNote(it: Item, src: Source | undefined, content: Content | 
 
 // ───────────────────────── збереження ─────────────────────────
 
-export type SaveResult = { ok: true; path: string; how: string } | { ok: false; error: string };
+export type SaveResult = { ok: true; path: string; how: string; open?: string } | { ok: false; error: string };
 
 const b64 = (s: string) => {
   const bytes = new TextEncoder().encode(s);
@@ -176,12 +176,14 @@ async function copy(text: string) {
   }
 }
 
-async function saveUri(o: Opts, title: string, md: string): Promise<SaveResult> {
+async function saveUri(o: Opts, title: string, md: string, defer = false): Promise<SaveResult> {
   const file = `${o.folder.replace(/\/+$/, '')}/${title}`;
   const base = `obsidian://new?vault=${encodeURIComponent(o.vault)}&file=${encodeURIComponent(file)}`;
   let url = `${base}&content=${encodeURIComponent(md)}`;
   // довгі нотатки — через буфер обміну (адреса має межу довжини)
   if (url.length > 12000 && Platform.OS === 'web' && (await copy(md))) url = `${base}&clipboard=true`;
+  // браузер блокує obsidian:// після довгого очікування (переклад) — тоді відкриваємо окремим дотиком
+  if (defer) return { ok: true, path: file + '.md', how: 'в Obsidian', open: url };
   try {
     if (Platform.OS === 'web') window.location.href = url;
     else await Linking.openURL(url);
@@ -204,11 +206,11 @@ function saveFile(title: string, md: string): SaveResult {
   return { ok: true, path: title + '.md', how: 'файлом' };
 }
 
-export async function saveToObsidian(o: Opts, title: string, md: string): Promise<SaveResult> {
+export async function saveToObsidian(o: Opts, title: string, md: string, defer = false): Promise<SaveResult> {
   try {
     if (o.method === 'github') return await saveGithub(o, title, md);
     if (o.method === 'file') return saveFile(title, md);
-    return await saveUri(o, title, md);
+    return await saveUri(o, title, md, defer);
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : 'Помилка збереження' };
   }
