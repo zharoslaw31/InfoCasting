@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ActivityIndicator, Platform, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SwipeDeck, SwipeDeckHandle } from '../../components/SwipeDeck';
-import { GradientButton, RoundButton, Toast } from '../../components/ui';
+import { GradientButton, RoundButton, Segmented, Toast } from '../../components/ui';
 import { buildTaste, interleave, plural, tasteScore, useFeed } from '../../lib/feed';
 import { openArticle } from '../../lib/nav';
 import { useHaptics, useStore } from '../../lib/store';
@@ -47,6 +47,20 @@ export default function CastingScreen() {
       }),
     [feed, kinds, muted, sourceOf],
   );
+
+  const kindValue: 'all' | Kind = kinds.length === 1 ? kinds[0] : 'all';
+  // скільки нового в кожному режимі — щоб було видно, куди варто перемкнутись
+  const kindCounts = useMemo(() => {
+    const c = { all: 0, rss: 0, tg: 0, reddit: 0 };
+    for (const it of feed?.items ?? []) {
+      if (seen.has(it.id)) continue;
+      const s = sourceOf(it.s);
+      if (muted.has(it.s) || (s && muted.has(s.group))) continue;
+      c.all++;
+      c[it.k]++;
+    }
+    return c;
+  }, [feed, seen, muted, sourceOf]);
 
   const deckKey = `${feed?.updated}|${kinds.join()}|${mode}|${shuffleTick}|${muted.size}`;
 
@@ -117,17 +131,14 @@ export default function CastingScreen() {
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
-  const toggleKind = (k: Kind) => {
-    const cur = state.settings.castingKinds?.length ? state.settings.castingKinds : ALL_KINDS;
-    let next = cur.includes(k) ? cur.filter((x) => x !== k) : [...cur, k];
-    if (!next.length) next = [k];
-    dispatch({ type: 'settings', settings: { castingKinds: next.length === ALL_KINDS.length ? [] : next } });
+  const setKind = (v: 'all' | Kind) => {
+    haptic('light');
+    dispatch({ type: 'settings', settings: { castingKinds: v === 'all' ? [] : [v] } });
   };
 
   const { width } = useWindowDimensions();
   const bottomPad = TAB_BAR_HEIGHT + Math.max(insets.bottom, 12) + 12;
   const left = queue.length;
-  const allKinds = kinds.length === ALL_KINDS.length;
 
   return (
     <View style={[styles.screen, { paddingTop: insets.top + 6 }]}>
@@ -137,7 +148,7 @@ export default function CastingScreen() {
             Info<Text style={{ color: colors.accent }}>Casting</Text>
           </Text>
           <Text style={styles.sub} numberOfLines={1}>
-            {!feed ? (loading ? 'Завантажуємо стрічку…' : ' ') : `${left} ${plural(left, ['матеріал', 'матеріали', 'матеріалів'])} у колоді`}
+            {!feed ? (loading ? 'Завантажуємо стрічку…' : ' ') : `${left} ${plural(left, ['матеріал', 'матеріали', 'матеріалів'])} у колоді · блоги ${kindCounts.rss} · TG ${kindCounts.tg} · Reddit ${kindCounts.reddit}`}
           </Text>
         </View>
         <View style={{ flexDirection: 'row', gap: 8 }}>
@@ -162,13 +173,22 @@ export default function CastingScreen() {
         </View>
       </View>
 
+      <View style={styles.kindRow}>
+        <Segmented
+          compact
+          value={kindValue}
+          onChange={setKind}
+          options={[
+            { value: 'all', label: 'Усе' },
+            { value: 'rss', label: 'Блоги' },
+            { value: 'tg', label: 'Telegram' },
+            { value: 'reddit', label: 'Reddit' },
+          ]}
+        />
+      </View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.modes} contentContainerStyle={styles.modesRow}>
-        <ModeChip icon="🎲" label="Усе" active={!forYou} onPress={() => dispatch({ type: 'settings', settings: { castingMode: 'all' } })} />
+        <ModeChip icon="🕒" label="Свіже" active={!forYou} onPress={() => dispatch({ type: 'settings', settings: { castingMode: 'all' } })} />
         <ModeChip icon="✨" label="Для тебе" active={forYou} onPress={() => dispatch({ type: 'settings', settings: { castingMode: 'foryou' } })} />
-        <View style={styles.modeSep} />
-        <ModeChip icon="📰" label="Блоги" active={kinds.includes('rss')} soft={allKinds} onPress={() => toggleKind('rss')} />
-        <ModeChip icon="✈️" label="Telegram" active={kinds.includes('tg')} soft={allKinds} onPress={() => toggleKind('tg')} />
-        <ModeChip icon="👽" label="Reddit" active={kinds.includes('reddit')} soft={allKinds} onPress={() => toggleKind('reddit')} />
         <View style={styles.modeSep} />
         <ModeChip icon="☕" label="Що почитати?" onPress={() => router.push('/pick')} />
       </ScrollView>
@@ -253,7 +273,8 @@ function TipRow({ icon, color, text }: { icon: React.ComponentProps<typeof Ionic
 }
 
 const styles = StyleSheet.create({
-  modes: { flexGrow: 0, marginTop: 12 },
+  kindRow: { paddingHorizontal: 14, marginTop: 12 },
+  modes: { flexGrow: 0, flexShrink: 0, marginTop: 10 },
   modesRow: { paddingHorizontal: 14, gap: 8 },
   modeChip: { flexDirection: 'row', alignItems: 'center', gap: 6, height: 36, paddingHorizontal: 14, borderRadius: radius.pill, backgroundColor: colors.bgElevated, borderWidth: 1, borderColor: colors.border, overflow: 'hidden' },
   modeChipActive: { borderColor: 'transparent' },

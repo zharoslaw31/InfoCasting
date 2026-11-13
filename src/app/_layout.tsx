@@ -33,6 +33,7 @@ export default function RootLayout() {
             <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg } }}>
               <Stack.Screen name="(tabs)" />
               <Stack.Screen name="article/[id]" options={sheet} />
+              <Stack.Screen name="save/[id]" options={sheet} />
               <Stack.Screen name="sources" />
               <Stack.Screen name="pick" />
               <Stack.Screen name="obsidian" />

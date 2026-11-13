@@ -18,7 +18,7 @@ export default function FeedScreen() {
   const insets = useSafeAreaInsets();
   const { feed, sourceOf, sources, loading, refresh, error } = useFeed();
   const { state, dispatch, isLiked, isSaved, readIds } = useStore();
-  const { save, busy } = useSaveToObsidian();
+  const { saveOrAsk, busy } = useSaveToObsidian();
   const [kind, setKind] = useState<KindFilter>('all');
   const [area, setArea] = useState<Area | null>(null);
   const [group, setGroup] = useState<string | null>(null);
@@ -100,10 +100,10 @@ export default function FeedScreen() {
         saving={busy === it.id}
         onOpen={() => openArticle(it.id)}
         onLike={() => (isLiked(it.id) ? dispatch({ type: 'remove', id: it.id, list: 'liked' }) : dispatch({ type: 'add', item: it, list: 'liked' }))}
-        onSave={() => save(it).then((r) => showToast((r.ok ? '✓ ' : '⚠️ ') + r.text))}
+        onSave={() => saveOrAsk(it).then((r) => r && showToast((r.ok ? '✓ ' : '⚠️ ') + r.text))}
       />
     ),
-    [sourceOf, tr, readIds, isLiked, isSaved, busy, dispatch, save],
+    [sourceOf, tr, readIds, isLiked, isSaved, busy, dispatch, saveOrAsk],
   );
 
   const bottomPad = TAB_BAR_HEIGHT + Math.max(insets.bottom, 12) + 20;

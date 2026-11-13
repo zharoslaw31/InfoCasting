@@ -23,7 +23,7 @@ export default function LibraryScreen() {
   const insets = useSafeAreaInsets();
   const { state, dispatch, isLiked, isSaved, readIds } = useStore();
   const { sourceOf } = useFeed();
-  const { save, busy } = useSaveToObsidian();
+  const { saveOrAsk, busy } = useSaveToObsidian();
   const [list, setList] = useState<ListName>('liked');
   const [q, setQ] = useState('');
   const [toast, setToast] = useState<string | null>(null);
@@ -92,7 +92,7 @@ export default function LibraryScreen() {
               note={`${NOTE[list]} ${timeAgo(e.at)}`}
               onOpen={() => openArticle(e.id)}
               onLike={() => (isLiked(e.id) ? dispatch({ type: 'remove', id: e.id, list: 'liked' }) : dispatch({ type: 'add', item: e.item, list: 'liked' }))}
-              onSave={() => save(e.item).then((r) => showToast((r.ok ? '✓ ' : '⚠️ ') + r.text))}
+              onSave={() => saveOrAsk(e.item).then((r) => r && showToast((r.ok ? '✓ ' : '⚠️ ') + r.text))}
             />
             {list === 'saved' && e.path ? <Text style={styles.path}>📁 {e.path}</Text> : null}
           </View>

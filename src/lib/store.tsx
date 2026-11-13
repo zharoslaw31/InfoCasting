@@ -34,7 +34,7 @@ export const DEFAULT_SETTINGS: Settings = {
   mutedSources: [],
   mutedGroups: [],
   obsidian: {
-    method: 'uri',
+    method: 'github',
     vault: 'BAZA',
     folder: '2 Знання/2.3 Джерела',
     repo: 'zharoslaw31/BAZA',
@@ -42,6 +42,8 @@ export const DEFAULT_SETTINGS: Settings = {
     token: '',
     withOriginal: true,
     comments: 15,
+    syncToken: true,
+    askBeforeSave: true,
   },
 };
 
@@ -72,7 +74,7 @@ type Action =
   | { type: 'signedOut' };
 
 /** Налаштування, що їдуть в акаунт (без токена GitHub — він лишається лише на пристрої). */
-type SyncPrefs = Omit<Settings, 'haptics' | 'onboarded' | 'obsidian'> & { obsidian: Omit<Settings['obsidian'], 'token'> };
+type SyncPrefs = Omit<Settings, 'haptics' | 'onboarded' | 'obsidian'> & { obsidian: Omit<Settings['obsidian'], 'token'> & { token?: string } };
 
 /** Те, що зберігається в хмарі для акаунта. */
 export type SyncData = Pick<State, 'profile' | 'liked' | 'saved' | 'read' | 'skipped' | 'history'> & { prefs?: SyncPrefs; settingsAt?: number };
@@ -86,7 +88,9 @@ const lean = (list: LibraryEntry[], n: number) =>
 
 export const syncDataOf = (s: State): SyncData => {
   const { haptics, onboarded, obsidian, ...prefs } = s.settings;
-  const { token, ...ob } = obsidian;
+  const { token, ...rest } = obsidian;
+  // токен GitHub їде в акаунт лише з дозволу (Профіль → Obsidian), щоб база працювала на всіх пристроях
+  const ob = obsidian.syncToken && token ? { ...rest, token } : rest;
   return {
     profile: s.profile,
     liked: s.liked,
@@ -142,7 +146,16 @@ function reducer(s: State, a: Action): State {
       return {
         ...s,
         ...a.state,
-        settings: { ...DEFAULT_SETTINGS, ...(a.state.settings ?? {}), obsidian: { ...DEFAULT_SETTINGS.obsidian, ...(a.state.settings?.obsidian ?? {}) } },
+        settings: {
+          ...DEFAULT_SETTINGS,
+          ...(a.state.settings ?? {}),
+          obsidian: {
+            ...DEFAULT_SETTINGS.obsidian,
+            ...(a.state.settings?.obsidian ?? {}),
+            // до оновлення за замовчуванням був спосіб «через Obsidian» — тепер основний шлях у базу через GitHub
+            ...(a.state.settings?.obsidian && a.state.settings.obsidian.syncToken === undefined ? { method: 'github' as const } : {}),
+          },
+        },
         ready: true,
       };
     case 'swipe': {
@@ -191,7 +204,9 @@ function reducer(s: State, a: Action): State {
         read: a.data.read ?? [],
         skipped: a.data.skipped ?? [],
         history: a.data.history ?? [],
-        settings: p ? { ...s.settings, ...p, obsidian: { ...s.settings.obsidian, ...p.obsidian, token: s.settings.obsidian.token } } : s.settings,
+        settings: p
+          ? { ...s.settings, ...p, obsidian: { ...DEFAULT_SETTINGS.obsidian, ...s.settings.obsidian, ...p.obsidian, token: (p.obsidian.syncToken !== false && p.obsidian.token) || s.settings.obsidian.token } }
+          : s.settings,
         settingsAt: a.data.settingsAt ?? s.settingsAt,
         cloudUserId: a.userId,
         lastSyncAt: a.at,

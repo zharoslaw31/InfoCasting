@@ -54,33 +54,55 @@ function commentsToMd(cm: Comment[], max: number) {
   return out;
 }
 
-export function buildNote(it: Item, src: Source | undefined, content: Content | null, tr: Translated | null, o: Opts) {
+export type NoteStatus = 'хочу' | 'читаю' | 'прочитано';
+/** Що користувач уточнив у вікні збереження. */
+export type NoteExtra = { title?: string; topic?: string | null; thoughts?: string; status?: NoteStatus };
+
+export function defaultTitle(it: Item) {
+  return cleanName(it.tu ?? it.t) || 'Без назви';
+}
+
+/** Свої думки з вікна збереження → пункти «3 ключові думки» (кожен рядок — окремий пункт). */
+function thoughtLines(t?: string) {
+  const lines = (t ?? '')
+    .split(/\n+/)
+    .map((l) => l.replace(/^\s*(\d+[.)]|[-*•])\s*/, '').trim())
+    .filter(Boolean);
+  const out = lines.map((l, i) => `${i + 1}. ${l}`);
+  for (let i = out.length; i < 3; i++) out.push(`${i + 1}. `);
+  return out;
+}
+
+export function buildNote(it: Item, src: Source | undefined, content: Content | null, tr: Translated | null, o: Opts, x: NoteExtra = {}) {
   const translated = !!tr && it.l === 'en';
-  const title = cleanName((translated || it.tu ? it.tu : null) ?? it.t) || 'Без назви';
+  const title = cleanName(x.title ?? '') || defaultTitle(it);
+  const status: NoteStatus = x.status ?? 'хочу';
+  const today = stamp().slice(0, 10);
   const blocks = (tr?.b ?? content?.b ?? []).length ? (tr?.b ?? content!.b) : it.x ? ([['p', it.xu ?? it.x]] as Block[]) : [];
   const fmt = it.k === 'rss' ? 'стаття' : 'пост';
   const author = it.k === 'reddit' ? [it.a, it.r].filter(Boolean).join(' · ') : it.a || src?.name || '';
-  const tags = ['тип/джерело', 'стан/зерно', ...(src?.topic ? [src.topic] : [])];
+  const topic = x.topic === undefined ? src?.topic : x.topic;
+  const tags = ['тип/джерело', 'стан/зерно', ...(topic ? [topic] : [])];
   const lines = [
     '---',
     'tags:',
     ...tags.map((t) => '  - ' + t),
     'створено: ' + stamp(),
     'формат: ' + fmt,
-    'статус: хочу',
+    'статус: ' + status,
     'оцінка: ',
     'автор: ' + yamlStr(author),
     'рік: ' + new Date(it.d).getFullYear(),
     'посилання: ' + it.u,
     'обкладинка: ' + (it.i ?? ''),
-    'почав: ',
-    'закінчив: ',
+    'почав: ' + (status === 'хочу' ? '' : today),
+    'закінчив: ' + (status === 'прочитано' ? today : ''),
     'джерело: ' + yamlStr(src?.name ?? ''),
     '---',
     '# ' + title,
   ];
   if (it.tu && it.tu !== it.t) lines.push('*' + it.t.replace(/\*/g, '') + '*');
-  lines.push('', '```baze', 'твір', '```', '', '## Про що це (1–2 речення)', (it.xu ?? it.x).slice(0, 400), '', '## 3 ключові думки', '1. ', '2. ', '3. ', '', '## Матеріал');
+  lines.push('', '```baze', 'твір', '```', '', '## Про що це (1–2 речення)', (it.xu ?? it.x).slice(0, 400), '', '## 3 ключові думки', ...thoughtLines(x.thoughts), '', '## Матеріал');
   lines.push(...blocksToMd(blocks));
   if (it.e) lines.push('', `[${it.k === 'tg' ? 'Посилання з поста' : 'Посилання'}](${it.e})`);
   const linkLabel = it.k === 'tg' ? 'Пост у Telegram' : it.k === 'reddit' ? 'Допис на Reddit' : 'Оригінал статті';
@@ -112,7 +134,7 @@ const b64 = (s: string) => {
 const encPath = (p: string) => p.split('/').map(encodeURIComponent).join('/');
 
 async function gh(o: Opts, path: string, init?: RequestInit) {
-  return fetch(`https://api.github.com/repos/${o.repo}/${path}`, {
+  return fetch(`https://api.github.com/repos/${o.repo}${path ? '/' + path : ''}`, {
     ...init,
     headers: { accept: 'application/vnd.github+json', authorization: `Bearer ${o.token.trim()}`, 'x-github-api-version': '2022-11-28', ...(init?.headers ?? {}) },
   });
@@ -189,6 +211,28 @@ export async function saveToObsidian(o: Opts, title: string, md: string): Promis
     return await saveUri(o, title, md);
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : 'Помилка збереження' };
+  }
+}
+
+/** Посилання, що відкриває збережену нотатку в Obsidian. */
+export const obsidianOpenUrl = (vault: string, path: string) =>
+  `obsidian://open?vault=${encodeURIComponent(vault)}&file=${encodeURIComponent(path.replace(/\.md$/, ''))}`;
+
+/** Перевірити доступ до бази: повертає основну гілку або помилку. */
+export async function checkBase(o: Opts): Promise<{ ok: true; branch: string; folderExists: boolean } | { ok: false; error: string }> {
+  if (!o.token.trim()) return { ok: false, error: 'Вставте токен' };
+  try {
+    const r = await gh(o, '');
+    if (r.status === 401) return { ok: false, error: 'Токен недійсний — створіть новий' };
+    if (r.status === 404 || r.status === 403) return { ok: false, error: `Токен не бачить ${o.repo}: у токені виберіть цей репозиторій (Repository access → Only select repositories)` };
+    if (!r.ok) return { ok: false, error: `GitHub: HTTP ${r.status}` };
+    const d = (await r.json()) as { permissions?: { push?: boolean }; default_branch?: string };
+    if (d.permissions && d.permissions.push === false) return { ok: false, error: 'Токен може лише читати базу: дайте Contents → Read and write' };
+    const branch = o.branch || d.default_branch || 'main';
+    const f = await gh(o, `contents/${encPath(o.folder.replace(/\/+$/, ''))}?ref=${encodeURIComponent(branch)}`);
+    return { ok: true, branch, folderExists: f.ok };
+  } catch {
+    return { ok: false, error: 'Немає зʼєднання з GitHub' };
   }
 }
 

@@ -24,7 +24,7 @@ export default function ArticleScreen() {
   const insets = useSafeAreaInsets();
   const { byId, sourceOf } = useFeed();
   const { state, dispatch, isLiked, isSaved } = useStore();
-  const { save, busy } = useSaveToObsidian();
+  const { saveOrAsk, busy } = useSaveToObsidian();
   const [toast, setToast] = useState<string | null>(null);
   const [showOrig, setShowOrig] = useState(!state.settings.translate);
 
@@ -187,7 +187,7 @@ export default function ArticleScreen() {
           label={busy === it.id ? 'Зберігаю…' : saved ? 'Ще раз в Obsidian' : 'В Obsidian'}
           color={colors.cooked}
           busy={busy === it.id}
-          onPress={() => save(it, { content, tr: showOrig ? null : tr }).then((r) => showToast((r.ok ? '✓ ' : '⚠️ ') + r.text))}
+          onPress={() => saveOrAsk(it, { content, tr: showOrig ? null : tr }).then((r) => r && showToast((r.ok ? '✓ ' : '⚠️ ') + r.text))}
         />
         <BarBtn icon="open-outline" label={it.k === 'tg' ? 'Telegram' : it.k === 'reddit' ? 'Reddit' : 'Оригінал'} color={colors.text} onPress={() => openUrl(it.u)} />
       </View>

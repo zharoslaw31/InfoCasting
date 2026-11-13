@@ -102,7 +102,11 @@ export default function ProfileScreen() {
           <Row
             icon="diamond-outline"
             title="Obsidian"
-            sub={`Зберігати ${METHOD_LABEL[s.obsidian.method]} · ${s.obsidian.folder}`}
+            sub={
+              s.obsidian.method === 'github' && !s.obsidian.token
+                ? '⚠️ База не підключена — натисніть, щоб підключити'
+                : `Зберігати ${METHOD_LABEL[s.obsidian.method]} · ${s.obsidian.folder}`
+            }
             onPress={() => router.push('/obsidian')}
           />
           <Row

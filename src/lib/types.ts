@@ -90,6 +90,12 @@ export type Settings = {
     withOriginal: boolean;
     /** скільки коментарів Reddit зберігати */
     comments: number;
+    /** зберігати токен в акаунті, щоб база працювала на всіх пристроях */
+    syncToken: boolean;
+    /** перевірено: репозиторій і доступ працюють */
+    verified?: boolean;
+    /** питати тему й думки перед збереженням (крім свайпу вгору) */
+    askBeforeSave: boolean;
   };
 };
 
