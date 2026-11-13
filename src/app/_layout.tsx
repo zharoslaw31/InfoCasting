@@ -4,7 +4,9 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { Platform } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { CloudOverlay } from '../components/CloudOverlay';
 import { startAutoUpdate } from '../lib/autoUpdate';
+import { CloudProvider } from '../lib/cloud';
 import { FeedProvider } from '../lib/feed';
 import { StoreProvider } from '../lib/store';
 import { colors } from '../theme';
@@ -24,6 +26,7 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <StoreProvider>
+        <CloudProvider>
         <FeedProvider>
           <ThemeProvider value={theme}>
             <StatusBar style="light" />
@@ -34,8 +37,10 @@ export default function RootLayout() {
               <Stack.Screen name="pick" />
               <Stack.Screen name="obsidian" />
             </Stack>
+            <CloudOverlay />
           </ThemeProvider>
         </FeedProvider>
+        </CloudProvider>
       </StoreProvider>
     </SafeAreaProvider>
   );

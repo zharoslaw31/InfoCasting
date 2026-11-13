@@ -29,7 +29,17 @@ jobs:
       - run: npm ci
       - run: npx tsc --noEmit
       - name: Build web app
-        run: npx expo export --platform web --output-dir dist
+        env:
+          # публічні адреса й anon-ключ Supabase (ті самі, що в MovieCasting і CookCasting); доступ до даних обмежує RLS
+          SB_URL: ${{ secrets.SUPABASE_URL || vars.SUPABASE_URL }}
+          EXPO_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY || vars.SUPABASE_ANON_KEY }}
+        run: |
+          SB_URL="$(printf '%s' "$SB_URL" | tr -d '[:space:]')"
+          # адреса проєкту Supabase (публічна, та сама, що в MovieCasting)
+          [ -z "$SB_URL" ] && SB_URL="https://xiniojnshtldindforye.supabase.co"
+          echo "Supabase URL: ${SB_URL:+є}${SB_URL:-немає}; ключ: ${EXPO_PUBLIC_SUPABASE_ANON_KEY:+є}${EXPO_PUBLIC_SUPABASE_ANON_KEY:-немає}"
+          export EXPO_PUBLIC_SUPABASE_URL="$SB_URL"
+          npx expo export --platform web --output-dir dist
       - name: SPA fallback for deep links
         run: cp dist/index.html dist/404.html && touch dist/.nojekyll
       - uses: actions/upload-pages-artifact@v3

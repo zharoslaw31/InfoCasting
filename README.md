@@ -46,6 +46,16 @@ GitHub Actions (**Update feed**) кожні 30 хвилин запускає [`s
 - **Obsidian** — відкривається Obsidian на цьому пристрої (`obsidian://new`).
 - **Файл .md** — завантаження файлу.
 
+## 👤 Акаунт і синхронізація
+
+Вхід за email і паролем, як у MovieCasting і CookCasting, і той самий акаунт. Відкладене, збережене в Obsidian, прочитане, пропущене, вимкнені джерела й налаштування зберігаються в хмарі й доступні на всіх пристроях. Токен GitHub для Obsidian у хмару не потрапляє. Без входу все зберігається лише на пристрої.
+
+Налаштування (один раз):
+
+1. У Supabase виконайте [`supabase/info_libraries.sql`](supabase/info_libraries.sql) (SQL Editor → Run).
+2. У Supabase → Authentication → URL Configuration → Redirect URLs додайте `https://zharoslaw31.github.io/InfoCasting/`.
+3. У цьому репозиторії додайте секрет Actions `SUPABASE_ANON_KEY` (те саме значення, що в CookCasting) і перезапустіть «Publish website».
+
 ## 🌐 Встановити на телефон
 
 - **iPhone (Safari):** «Поділитися» → «На початковий екран».
@@ -61,7 +71,7 @@ npx expo start                       # w — у браузері
 cd scripts && npm install && node build-feed.mjs ../data-out   # зібрати стрічку локально
 ```
 
-Expo SDK 58 · React Native · TypeScript · Expo Router · AsyncStorage (ваші дані лише на пристрої).
+Expo SDK 58 · React Native · TypeScript · Expo Router · Supabase (акаунт) · AsyncStorage.
 
 ```
 src/

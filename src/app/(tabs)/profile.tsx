@@ -3,6 +3,7 @@ import { router } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { Platform, Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { AccountCard } from '../../components/AccountCard';
 import { SectionTitle, Toast } from '../../components/ui';
 import { KIND, plural, timeAgo, useFeed } from '../../lib/feed';
 import { triggerFeedUpdate } from '../../lib/obsidian';
@@ -69,6 +70,8 @@ export default function ProfileScreen() {
             </Text>
           </View>
         </View>
+
+        <AccountCard />
 
         <View style={styles.tiles}>
           <Tile n={state.read.length} label="прочитано" color={colors.accent} />
@@ -158,7 +161,7 @@ export default function ProfileScreen() {
 
         <SectionTitle>Дані</SectionTitle>
         <View style={styles.card}>
-          <Text style={styles.sub}>Бібліотека й налаштування зберігаються лише на цьому пристрої.</Text>
+          <Text style={styles.sub}>Без входу бібліотека й налаштування зберігаються лише на цьому пристрої. Токен GitHub завжди лишається тільки на пристрої.</Text>
           <Pressable
             onPress={() => {
               if (!confirmReset) return setConfirmReset(true);

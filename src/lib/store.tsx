@@ -21,6 +21,11 @@ type State = {
   /** пропущено свайпом */
   skipped: LibraryEntry[];
   history: { id: string; kind: SwipeKind; at: number }[];
+  /** коли востаннє змінювали налаштування (для синхронізації) */
+  settingsAt?: number;
+  /** з яким акаунтом пов'язані дані на цьому пристрої */
+  cloudUserId?: string | null;
+  lastSyncAt?: number;
 };
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -61,7 +66,71 @@ type Action =
   | { type: 'settings'; settings: Partial<Settings> }
   | { type: 'obsidian'; obsidian: Partial<Settings['obsidian']> }
   | { type: 'profile'; profile: Partial<Profile> }
-  | { type: 'resetLibrary' };
+  | { type: 'resetLibrary' }
+  | { type: 'applyCloud'; data: SyncData; userId: string; at: number }
+  | { type: 'cloudLinked'; userId: string; at: number }
+  | { type: 'signedOut' };
+
+/** Налаштування, що їдуть в акаунт (без токена GitHub — він лишається лише на пристрої). */
+type SyncPrefs = Omit<Settings, 'haptics' | 'onboarded' | 'obsidian'> & { obsidian: Omit<Settings['obsidian'], 'token'> };
+
+/** Те, що зберігається в хмарі для акаунта. */
+export type SyncData = Pick<State, 'profile' | 'liked' | 'saved' | 'read' | 'skipped' | 'history'> & { prefs?: SyncPrefs; settingsAt?: number };
+
+/** Прочитане й пропущене — без анонсів, щоб рядок в акаунті був невеликим. */
+const lean = (list: LibraryEntry[], n: number) =>
+  list.slice(0, n).map((e) => {
+    const { x, xu, ...rest } = e.item;
+    return { ...e, item: { ...rest, x: '' } };
+  });
+
+export const syncDataOf = (s: State): SyncData => {
+  const { haptics, onboarded, obsidian, ...prefs } = s.settings;
+  const { token, ...ob } = obsidian;
+  return {
+    profile: s.profile,
+    liked: s.liked,
+    saved: s.saved,
+    read: lean(s.read, 1500),
+    skipped: lean(s.skipped, 1500),
+    history: s.history.slice(-1000),
+    prefs: { ...prefs, obsidian: ob },
+    settingsAt: s.settingsAt ?? 0,
+  };
+};
+
+const mergeList = (a: LibraryEntry[] = [], b: LibraryEntry[] = []) => {
+  const map = new Map<string, LibraryEntry>();
+  [...a, ...b].forEach((e) => {
+    const cur = map.get(e.id);
+    if (!cur || e.at > cur.at) map.set(e.id, { ...e, path: e.path ?? cur?.path, item: e.item.x || !cur ? e.item : cur.item });
+  });
+  return [...map.values()].sort((x, y) => y.at - x.at);
+};
+
+/** Об'єднання даних пристрою з даними акаунта. */
+export const mergeSync = (local: SyncData, cloud: SyncData): SyncData => {
+  const seen = new Set<string>();
+  const newerPrefs = (cloud.settingsAt ?? 0) > (local.settingsAt ?? 0) ? cloud : local;
+  return {
+    profile: cloud.profile ?? local.profile,
+    liked: mergeList(local.liked, cloud.liked),
+    saved: mergeList(local.saved, cloud.saved),
+    read: mergeList(local.read, cloud.read),
+    skipped: mergeList(local.skipped, cloud.skipped),
+    history: [...(cloud.history ?? []), ...local.history]
+      .filter((h) => {
+        const k = `${h.id}|${h.at}`;
+        if (seen.has(k)) return false;
+        seen.add(k);
+        return true;
+      })
+      .sort((x, y) => x.at - y.at)
+      .slice(-3000),
+    prefs: newerPrefs.prefs ?? local.prefs,
+    settingsAt: Math.max(local.settingsAt ?? 0, cloud.settingsAt ?? 0),
+  };
+};
 
 const LIMIT: Record<ListName, number> = { liked: 2000, saved: 5000, read: 3000, skipped: 4000 };
 const without = (list: LibraryEntry[], id: string) => list.filter((e) => e.id !== id);
@@ -105,13 +174,43 @@ function reducer(s: State, a: Action): State {
       return { ...s, read: read.slice(0, LIMIT.read) };
     }
     case 'settings':
-      return { ...s, settings: { ...s.settings, ...a.settings } };
+      return { ...s, settings: { ...s.settings, ...a.settings }, settingsAt: Date.now() };
     case 'obsidian':
-      return { ...s, settings: { ...s.settings, obsidian: { ...s.settings.obsidian, ...a.obsidian } } };
+      return { ...s, settings: { ...s.settings, obsidian: { ...s.settings.obsidian, ...a.obsidian } }, settingsAt: Date.now() };
     case 'profile':
       return { ...s, profile: { ...s.profile, ...a.profile } };
     case 'resetLibrary':
       return { ...s, liked: [], saved: [], read: [], skipped: [], history: [] };
+    case 'applyCloud': {
+      const p = a.data.prefs;
+      return {
+        ...s,
+        profile: a.data.profile ?? s.profile,
+        liked: a.data.liked ?? [],
+        saved: a.data.saved ?? [],
+        read: a.data.read ?? [],
+        skipped: a.data.skipped ?? [],
+        history: a.data.history ?? [],
+        settings: p ? { ...s.settings, ...p, obsidian: { ...s.settings.obsidian, ...p.obsidian, token: s.settings.obsidian.token } } : s.settings,
+        settingsAt: a.data.settingsAt ?? s.settingsAt,
+        cloudUserId: a.userId,
+        lastSyncAt: a.at,
+      };
+    }
+    case 'cloudLinked':
+      return { ...s, cloudUserId: a.userId, lastSyncAt: a.at };
+    case 'signedOut':
+      return {
+        ...s,
+        liked: [],
+        saved: [],
+        read: [],
+        skipped: [],
+        history: [],
+        profile: { ...initial.profile, createdAt: Date.now() },
+        cloudUserId: null,
+        lastSyncAt: undefined,
+      };
   }
 }
 
